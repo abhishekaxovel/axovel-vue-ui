@@ -107,7 +107,7 @@ components: {
 
 created() {
 
-    axios.get(`http://localhost:3800/users/users`)
+    axios.get(`http://localhost:3700/users/users`)
     .then(res => {
      console.log('res here...', res.data);
     })
