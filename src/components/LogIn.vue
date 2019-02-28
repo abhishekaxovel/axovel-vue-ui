@@ -1,6 +1,6 @@
 <template>
 <div class="container">
-  <form id="logInForm" onsubmit="return validateForm()">
+  <form id="logInForm" @submit="validateForm">
     <div class="row">
       <div class="col-25">
         <label for="email">Email</label>
@@ -39,7 +39,7 @@ methods:{
 
     axios({
     method: 'post',
-    url: 'http://localhost:3400/users/logIn',
+    url: 'http://localhost:3700/users/logIn',
     data: {logIn},
     config: { 
       headers: {'Content-Type': 'application/json'}
@@ -77,7 +77,7 @@ methods:{
 
 <style>
 /* Style inputs, select elements and textareas */
-input[type=text], select, textarea{
+input[type=text], select, textarea, input{
   width: 100%;
   padding: 12px;
   border: 1px solid #ccc;

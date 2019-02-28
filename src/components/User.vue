@@ -6,6 +6,7 @@
         <!-- <div v-if="user">
           <div :v-for="user.email">{{email}}</div>
         </div> -->
+        <p>{{email}}</p>
       </div>
     </div>
 </template>
@@ -27,10 +28,10 @@ data () {
   },
   created(){
 
-   axios.get(`http://localhost:3400/users/users`)
+   axios.get(`http://localhost:3700/users/users`)
     .then(res => {
       this.user = res.data;
-      this.email = res.data.email;
+      this.email = res.data[1].email;
     //  console.log('res here...', res.data);
      console.log('users here...', this.user);
     })
