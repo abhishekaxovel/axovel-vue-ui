@@ -46,7 +46,7 @@ methods:{
       }
     })
     .then(function (response) {
-        console.log('res here',response);
+        console.log(response.data);
     })
     .catch(function (response) {
         console.log('err here',response);
@@ -58,21 +58,18 @@ methods:{
       
          if( document.logInForm.email.value == "" ) {
             alert( "Please provide your email!" );
-            document.myForm.Name.focus() ;
+            document.logInForm.email.focus() ;
             return false;
          }
          if( document.logInForm.password.value == "" ) {
             alert( "Please provide your password!" );
-            document.myForm.EMail.focus() ;
+            document.logInForm.password.focus() ;
             return false;
          }
          return( true );
       }
 }
 }
-</script>
-
-
 </script>
 
 <style>
