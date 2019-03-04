@@ -5,6 +5,7 @@ import HelloWorld from '@/components/HelloWorld'
 import Admin from '@/components/Admin'
 import User from '@/components/User'
 import LogIn from '@/components/LogIn'
+import UserLogIn from '@/components/UserLogIn'
 
 Vue.use(Router)
 
@@ -34,6 +35,11 @@ export default new Router({
       path: '/user',
       name: 'User',
       component: User
+    },
+    {
+      path: '/login-page',
+      name: 'UserLogIn',
+      component: UserLogIn
     }
   ]
 })

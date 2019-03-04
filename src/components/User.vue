@@ -1,12 +1,25 @@
 <template>
     <div class="user">
-      <!-- <h1>{{msg}}</h1> -->
-      <h2>User Page</h2>
-      <div class="details">
-        <!-- <div v-if="user">
-          <div :v-for="user.email">{{email}}</div>
-        </div> -->
-        <p>{{email}}</p>
+    
+      <h2 style="text-align: -webkit-center;
+    font-family: -webkit-pictograph;
+    color: darkcyan;">User Page</h2>
+      <hr>
+      <div class="user">
+    
+        <div v-for="detail in details">
+
+              <p class="details">
+                 <strong>First Name : </strong> {{detail.firstname}}
+                 <strong>Last Name : </strong> {{detail.lastname}} 
+                 <strong>Email : </strong> {{detail.email}} 
+                 <strong>Mobile : </strong> {{detail.mobile}} 
+                 <strong>Address : </strong> {{detail.address}}
+              </p>
+              <hr>
+
+        </div>
+
       </div>
     </div>
 </template>
@@ -15,6 +28,8 @@
 import axios from 'axios'
 import HelloWorld from './HelloWorld'
 
+// details: []
+
 export default {
 name: 'user',
 components: {
@@ -22,18 +37,27 @@ components: {
 },
 data () {
     return {
-      // user: [],
-      email: ''
+      firstname: '',
+      lastname: '',
+      email: '',
+      mobile: '',
+      address: '',
+      details: []
     }
   },
   created(){
 
    axios.get(`http://localhost:3700/users/users`)
     .then(res => {
-      this.user = res.data;
-      this.email = res.data[1].email;
-    //  console.log('res here...', res.data);
-     console.log('users here...', this.user);
+      this.details = res.data;
+
+      this.firstname = res.data.firstname;
+      this.lastname = res.data.lastname;
+      this.email = res.data.email;
+      this.mobile = res.data.mobile;
+      this.address = res.data.address;
+
+     console.log('details here...', this.details);
     })
     .catch(e => {
       console.log('err here...',e);
@@ -53,5 +77,9 @@ data () {
   margin: 7px;
   padding: 10px;
   font-family: 'Courier New', Courier, monospace;
+}
+.user{
+    text-align: -webkit-auto;
+    margin-left: 25px;
 }
 </style>

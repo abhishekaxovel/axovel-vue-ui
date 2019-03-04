@@ -3,9 +3,6 @@
 <div class="admin">
 
               <h1> {{ msg }} </h1>
-              <!-- <h3> {{name}} </h3> -->
-              <!-- <h3> {{desc}} </h3> -->
-              <!-- <hr> -->
               <!-- <User></User> -->
               <hr>
   <div>
@@ -66,7 +63,7 @@
       </div>
     </div>
     <div class="pull-right">
-      <button type="button" class="btn btn-success" @click="submitForm">Save</button>
+      <button type="button" class="btn btn-primary" @click="submitForm">Create User</button>
     </div>
   </form>
 </div>
@@ -82,9 +79,7 @@
 import User from './User'
 import HelloWorld from './HelloWorld'
 import axios from 'axios';
-// import api from '../services/api';
 
-// const api = new api
 
 export default {
 name: 'Admin',
@@ -92,11 +87,6 @@ components: {
     User,
     HelloWorld
 },
-// data: {
-//   todos: [],
-//   name: String,
-//   description: String,
-// },
  data () {
     return {
       name: String,
@@ -104,7 +94,6 @@ components: {
       msg: 'Welcome Admin'
     }
   },
-
 created() {
 
     axios.get(`http://localhost:3700/users/users`)
@@ -160,7 +149,7 @@ created() {
 <style>
 /* Style inputs, select elements and textareas */
 input[type=text], select, textarea{
-  width: 100%;
+  width: 70%;
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 4px;

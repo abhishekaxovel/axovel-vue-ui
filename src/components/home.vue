@@ -1,8 +1,9 @@
 <template>
-<div> <h2> Home Page </h2> 
+<div> <h2 style="font-family: monospace;"> Home Page </h2> 
 
 <div class="logIn">
     <router-link class="btn btn-primary" to="./logIn">Log In</router-link>
+    <router-link class="btn btn-danger" to="./login-page">Log In</router-link>
 </div> <hr>
 
 <div>
