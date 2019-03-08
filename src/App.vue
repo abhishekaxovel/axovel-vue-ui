@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <!-- <img src="./assets/logo.png"> -->
     <div class="home-btn">
       <router-link to="/">Home</router-link>
     </div>
@@ -21,7 +20,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 20px;
+  /* margin-top: 20px; */
 }
 
 .home-btn{

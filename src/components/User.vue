@@ -7,7 +7,8 @@
       <hr>
       <div class="user">
     
-        <div v-for="detail in details">
+        <div v-for="(detail, i) in details"
+              :key="i">
 
               <p class="details">
                  <strong>First Name : </strong> {{detail.firstname}}

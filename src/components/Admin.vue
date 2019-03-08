@@ -2,7 +2,15 @@
 
 <div class="admin">
 
-              <h1> {{ msg }} </h1>
+  <div> <h1> {{ msg }} </h1> </div>
+
+          <!-- <div>
+            <h1 style="display: -webkit-box;"> {{ msg }} </h1>
+            <v-btn color="warning" fab dark>
+              <v-icon>account_circle</v-icon>
+            </v-btn>
+          </div> -->
+
               <!-- <User></User> -->
               <hr>
   <div>
@@ -78,8 +86,7 @@
 <script>
 import User from './User'
 import HelloWorld from './HelloWorld'
-import axios from 'axios';
-
+import axios from 'axios'
 
 export default {
 name: 'Admin',
@@ -98,6 +105,7 @@ created() {
 
     axios.get(`http://localhost:3700/users/users`)
     .then(res => {
+      // this.email = res.data.email;
      console.log('res here...', res.data);
     })
     .catch(e => {
