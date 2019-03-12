@@ -2,7 +2,6 @@
   <v-footer
     dark
     height="auto"
-    fixed="true"
   >
     <v-card
       flat

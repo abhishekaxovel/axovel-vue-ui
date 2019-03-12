@@ -39,7 +39,7 @@ methods:{
 
     axios({
     method: 'post',
-    url: 'http://localhost:3700/users/logIn',
+    url: 'http://localhost:4100/users/logIn',
     data: {logIn},
     config: { 
       headers: {'Content-Type': 'application/json'}

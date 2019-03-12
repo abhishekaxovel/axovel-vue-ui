@@ -1,6 +1,5 @@
 <template>
         <div> 
-                <Toolbar></Toolbar>
             <h2 style="font-family: monospace;"> Home Page </h2> 
 
         <div class="logIn">
@@ -9,24 +8,18 @@
         </div> <hr>
 
         <div>
+            <router-link to="/">Home</router-link>
+            <hr>
             <router-link to="/admin">Admin</router-link>
             <hr>
             <router-link to="/user">User</router-link>
             <hr>
         </div>
-                <Footer></Footer>
         </div>
 </template>
 
 <script>
-import Toolbar from './Toolbar'
-import Footer from './Footer'
-
 export default {
-
-components: {
-    Toolbar,Footer
-},
 
 }
 </script>

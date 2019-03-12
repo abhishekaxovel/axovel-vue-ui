@@ -1,15 +1,26 @@
 <template>
   <div id="app">
     <div class="home-btn">
-      <router-link to="/">Home</router-link>
+      <Toolbar/>
+      <!-- <router-link to="/">Home</router-link> -->
+      <!-- </Toolbar> -->
+      <!-- <router-link to="/">Home</router-link> -->
     </div>
     <router-view/>
+    <Footer/>
   </div>
 </template>
 
 <script>
+import Toolbar from './components/Toolbar'
+import Footer from './components/Footer'
+
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    Toolbar,
+    Footer
+  }
 }
 </script>
 
