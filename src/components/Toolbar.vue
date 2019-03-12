@@ -2,6 +2,11 @@
   <v-toolbar dark color="primary">
     <v-toolbar-side-icon></v-toolbar-side-icon>
 
+
+    <v-btn icon to="/">
+      <v-icon>home</v-icon>
+    </v-btn>
+
     <v-toolbar-title class="white--text">Title</v-toolbar-title>
 
     <v-spacer></v-spacer>
