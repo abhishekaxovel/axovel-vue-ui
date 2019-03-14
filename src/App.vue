@@ -1,13 +1,10 @@
 <template>
   <div id="app">
-    <div class="home-btn">
+    <!-- <div class="home-btn">
       <Toolbar/>
-      <!-- <router-link to="/">Home</router-link> -->
-      <!-- </Toolbar> -->
-      <!-- <router-link to="/">Home</router-link> -->
-    </div>
+    </div> -->
     <router-view/>
-    <Footer/>
+    <!-- <Footer/> -->
   </div>
 </template>
 
@@ -31,7 +28,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  /* margin-top: 20px; */
+  margin-top: 40px;
 }
 
 .home-btn{

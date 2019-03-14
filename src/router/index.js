@@ -1,30 +1,27 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/home'
-import HelloWorld from '@/components/HelloWorld'
 import Admin from '@/components/Admin'
 import User from '@/components/User'
 import LogIn from '@/components/LogIn'
 import UserLogIn from '@/components/UserLogIn'
+import userdashboard from '@/components/user-dashboard'
+import admindashboard from '@/components/admin-dashboard'
+import forgotPassword from '@/components/forgotPassword'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/home',
       name: 'Home',
       component: Home
     },
     {
-      path: '/logIn',
+      path: '/',
       name: 'Log-In',
       component: LogIn
-    },
-    {
-      path: '/hello',
-      name: 'HelloWorld',
-      component: HelloWorld
     },
     {
       path: '/admin',
@@ -37,9 +34,24 @@ export default new Router({
       component: User
     },
     {
+      path: '/admin-dash',
+      name: 'Admin-Dash',
+      component: admindashboard
+    },
+    {
+      path: '/user-dash',
+      name: 'User-Dash',
+      component: userdashboard
+    },
+    {
       path: '/login-page',
       name: 'UserLogIn',
       component: UserLogIn
+    },
+    {
+      path: '/forgot-password',
+      name: 'forgotpassword',
+      component: forgotPassword
     }
   ]
 })

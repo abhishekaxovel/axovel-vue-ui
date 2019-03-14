@@ -27,14 +27,12 @@
 
 <script>
 import axios from 'axios'
-import HelloWorld from './HelloWorld'
 
 // details: []
 
 export default {
 name: 'user',
 components: {
-  HelloWorld
 },
 data () {
     return {
@@ -48,7 +46,7 @@ data () {
   },
   created(){
 
-   axios.get(`http://localhost:4500/users/users`)
+   axios.get(`http://localhost:5300/users/users`)
     .then(res => {
       this.details = res.data;
 

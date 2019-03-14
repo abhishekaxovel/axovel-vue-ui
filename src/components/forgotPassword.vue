@@ -9,29 +9,10 @@
         <input type="email" id="email" name="email" placeholder="enter your email here" required>
       </div>
     </div>
-    <div class="row">
-      <div class="col-25">
-        <label for="password">Password</label>
-      </div>
-      <div class="col-75">
-        <input type="password" id="password" name="password" placeholder="enter your password here" required>
-      </div>
-    </div>
     <div class="pull-right">
-      <button type="button" class="btn btn-success" @click="LogInForm">Log In</button>
+      <button type="button" class="btn btn-success" @click="LogInForm">change password</button>
     </div>
   </form>
-
-                
-                      <div style="display: -webkit-box;">
-                          <router-link to="/forgot-password">Forgot password</router-link>
-                      </div>
-
-                      <div>
-                        New user <router-link to="/admin">Register here</router-link>
-                      </div>
-                  
-
 </div>
 </template>
 

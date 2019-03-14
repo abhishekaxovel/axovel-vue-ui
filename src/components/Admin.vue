@@ -2,7 +2,7 @@
 
 <div class="admin">
 
-  <div> <h1> {{ msg }} </h1> </div>
+  <div> <h1> Register here </h1> </div>
 
           <!-- <div>
             <h1 style="display: -webkit-box;"> {{ msg }} </h1>
@@ -85,14 +85,12 @@
 
 <script>
 import User from './User'
-import HelloWorld from './HelloWorld'
 import axios from 'axios'
 
 export default {
 name: 'Admin',
 components: {
-    User,
-    HelloWorld
+    User
 },
  data () {
     return {
@@ -103,7 +101,7 @@ components: {
   },
 created() {
 
-    axios.get(`http://localhost:4500/users/users`)
+    axios.get(`http://localhost:5300/users/users`)
     .then(res => {
       // this.email = res.data.email;
      console.log('res here...', res.data);
@@ -133,7 +131,7 @@ created() {
       
     axios({
     method: 'post',
-    url: 'http://localhost:4500/users/create',
+    url: 'http://localhost:5300/users/create',
     data: {userData} ,
     config: { 
       headers: {'Content-Type': 'application/json'}
