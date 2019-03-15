@@ -36,12 +36,19 @@ export default new Router({
     {
       path: '/admin-dash',
       name: 'Admin-Dash',
-      component: admindashboard
+      component: admindashboard,
+      meta: { 
+        requiresAuth: true,
+        is_admin : true
+        }
     },
     {
       path: '/user-dash',
       name: 'User-Dash',
-      component: userdashboard
+      component: userdashboard,
+      meta: { 
+        requiresAuth: true
+        }
     },
     {
       path: '/login-page',

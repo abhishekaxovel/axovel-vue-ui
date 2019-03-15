@@ -23,12 +23,13 @@
   </form>
 
                 
-                      <div style="display: -webkit-box;">
+                      <!-- <div style="display: -webkit-box;">
                           <router-link to="/forgot-password">Forgot password</router-link>
-                      </div>
+                      </div> -->
 
                       <div>
-                        New user <router-link to="/admin">Register here</router-link>
+                        <router-link style="margin: 10px" to="/forgot-password">Forgot password</router-link>
+                        New user <router-link style="margin: 3px" to="/admin">Register here</router-link>
                       </div>
                   
 
@@ -41,6 +42,14 @@ import router from '../router/index.js'
 
 export default {
 
+// props: ['details'],
+
+data(){
+  return{
+    details: []
+  }
+},
+
 methods:{
     LogInForm(){
         let logIn = new FormData()
@@ -49,13 +58,15 @@ methods:{
 
         axios({
         method: 'post',
-        url: 'http://localhost:5300/users/logIn',
+        url: 'http://localhost:5400/users/logIn',
         data: {logIn},
         config: { 
         headers: {'Content-Type': 'application/json'}
         }
     })
       .then(function (response) {
+        // this.details = response.data.user
+        // console.log('details...', details);
         console.log('user res here...',response.data);
             if(response.data.data == true && response.data.role == 'admin'){
                 console.log('admin page');

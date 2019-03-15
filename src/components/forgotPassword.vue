@@ -26,11 +26,9 @@ methods:{
     LogInForm(){
         let logIn = new FormData()
         logIn.email = email.value
-        logIn.password = password.value
-
         axios({
         method: 'post',
-        url: 'http://localhost:5300/users/logIn',
+        url: 'http://localhost:5400/users/logIn',
         data: {logIn},
         config: { 
         headers: {'Content-Type': 'application/json'}
@@ -38,24 +36,10 @@ methods:{
     })
       .then(function (response) {
         console.log('user res here...',response.data);
-            if(response.data.data == true && response.data.role == 'admin'){
-                console.log('admin page');
-                // this.$router.push('/admin-dash');
-                router.replace('/admin-dash');
-            }
-            else if(response.data.data == true && response.data.role == 'user'){
-                console.log('user page');  
-                // this.$router.push('/user-dash');
-                router.replace('/user-dash');
-            }
-            else{
-              console.log('user not found');
-            }
       })
             .catch(function (response) {
                 console.log('err here',response);
             });
-            // this.$router.push('/admin-dash');
       }
       
   }
