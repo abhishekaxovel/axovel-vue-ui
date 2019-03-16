@@ -15,13 +15,15 @@ export default {
 
     logOut(){
         console.log('in log out func...');
-        axios.get(`http://localhost:5400/users/logout`)
-        .then(res => {
-        console.log('res....', res);
-        })
-        .catch(e => {
-        console.log('err here...',e);
-        })
+        // this.$session.destroy();
+        // axios.get(`http://localhost:5400/users/logout`)
+        // .then(res => {
+        // console.log('res....', res);
+        // })
+        // .catch(e => {
+        // console.log('err here...',e);
+        // })
+        this.$router.push('/');
     }
 
   }

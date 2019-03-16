@@ -29,6 +29,7 @@ export default {
     methods: {
     logOut(){
         console.log('in log out func...');
+        this.$router.push('/');
         // this.$session.destroy();
         // this.$router.push('/');
     }

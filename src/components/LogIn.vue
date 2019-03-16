@@ -1,25 +1,33 @@
 <template>
 <div class="container">
   <form id="logInForm">
+
     <div class="row">
       <div class="col-25">
         <label for="email">Email</label>
       </div>
       <div class="col-75">
-        <input type="email" id="email" name="email" placeholder="enter your email here" required>
+        <input type="email" id="email" name="email" placeholder="enter your email here"
+        class="form-control" :class="{ 'is-invalid': submitted && !email }">
+        <div v-show="submitted && !email" class="invalid-feedback">Email is required</div>
       </div>
     </div>
+
     <div class="row">
       <div class="col-25">
         <label for="password">Password</label>
       </div>
       <div class="col-75">
-        <input type="password" id="password" name="password" placeholder="enter your password here" required>
+        <input type="password" id="password" name="password" placeholder="enter your password here"
+        class="form-control" :class="{ 'is-invalid': submitted && !password }">
+        <div v-show="submitted && !password" class="invalid-feedback">Password is required</div>
       </div>
     </div>
+
     <div class="pull-right">
       <button type="button" class="btn btn-success" @click="LogInForm">Log In</button>
     </div>
+
   </form>
 
                 
@@ -39,43 +47,58 @@
 <script>
 import axios from 'axios';
 import router from '../router/index.js'
+// import VueJwtDecode from 'vue-jwt-decode'
+import jwt_decode from 'jwt-decode'
 
 export default {
 
-// props: ['details'],
-
-data(){
-  return{
-    details: []
-  }
-},
+data () {
+        return {
+            email: '',
+            password: '',
+            submitted: false
+        }
+    },
+    
+      computed: {
+          loggingIn () {
+              return this.$store.state.authentication.status.loggingIn;
+          }
+      },
+    
+ created(){
+   console.log('in created....');
+  //  this.$store.dispatch('authentication/logout');
+ },
 
 methods:{
     LogInForm(){
+        console.log('in log in function....');
+        this.submitted = false;
         let logIn = new FormData()
         logIn.email = email.value
         logIn.password = password.value
 
         axios({
         method: 'post',
-        url: 'http://localhost:5400/users/logIn',
+        url: 'http://localhost:3100/users/logIn',
         data: {logIn},
         config: { 
         headers: {'Content-Type': 'application/json'}
         }
     })
       .then(function (response) {
-        // this.details = response.data.user
-        // console.log('details...', details);
-        console.log('user res here...',response.data);
-            if(response.data.data == true && response.data.role == 'admin'){
+        var decoded = jwt_decode(response.data.token);
+        console.log('decode....',decoded);
+        localStorage.setItem('jwt', response.data.token);
+        console.log('user res here...',response.data.token);
+        
+            if(decoded.data == true && decoded.role == 'admin'){
                 console.log('admin page');
-                // this.$router.push('/admin-dash');
                 router.replace('/admin-dash');
             }
-            else if(response.data.data == true && response.data.role == 'user'){
+            else if(decoded.data == true && decoded.role == 'user'){
                 console.log('user page');  
-                // this.$router.push('/user-dash');
                 router.replace('/user-dash');
             }
             else{
