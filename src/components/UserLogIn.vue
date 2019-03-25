@@ -48,7 +48,7 @@ import VueJwtDecode from 'vue-jwt-decode'
 
         axios({
         method: 'post',
-        url: 'http://localhost:3100/users/logIn',
+        url: 'http://localhost:3200/users/logIn',
         data: {logIn},
         config: { 
         headers: {'Content-Type': 'application/json'}

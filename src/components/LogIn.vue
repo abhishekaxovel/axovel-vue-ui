@@ -39,7 +39,9 @@
                         <router-link style="margin: 10px" to="/forgot-password">Forgot password</router-link>
                         New user <router-link style="margin: 3px" to="/admin">Register here</router-link>
                       </div>
-                  
+
+          <!-- <userDashboardVue /> -->
+          <!-- <adminDashboardVue :email="email"/>       -->
 
 </div>
 </template>
@@ -47,8 +49,9 @@
 <script>
 import axios from 'axios';
 import router from '../router/index.js'
-// import VueJwtDecode from 'vue-jwt-decode'
 import jwt_decode from 'jwt-decode'
+import adminDashboardVue from './admin-dashboard'
+import userDashboardVue from './user-dashboard'
 
 export default {
 
@@ -59,17 +62,11 @@ data () {
             submitted: false
         }
     },
-    
-      computed: {
-          loggingIn () {
-              return this.$store.state.authentication.status.loggingIn;
-          }
-      },
-    
- created(){
-   console.log('in created....');
-  //  this.$store.dispatch('authentication/logout');
- },
+
+components: {
+      userDashboardVue,
+      adminDashboardVue
+  },
 
 methods:{
     LogInForm(){
@@ -81,7 +78,7 @@ methods:{
 
         axios({
         method: 'post',
-        url: 'http://localhost:3100/users/logIn',
+        url: 'http://localhost:3200/users/logIn',
         data: {logIn},
         config: { 
         headers: {'Content-Type': 'application/json'}
@@ -90,6 +87,10 @@ methods:{
       .then(function (response) {
         var decoded = jwt_decode(response.data.token);
         console.log('decode....',decoded);
+        var details = decoded.user;
+        var userEmail = decoded.user.email;
+        console.log('user mail...', userEmail);
+        console.log('user details...',details);
         localStorage.setItem('jwt', response.data.token);
         console.log('user res here...',response.data.token);
         
@@ -105,10 +106,9 @@ methods:{
               console.log('user not found');
             }
       })
-            .catch(function (response) {
-                console.log('err here',response);
+            .catch(function (err) {
+                console.log('err here',err);
             });
-            // this.$router.push('/admin-dash');
       }
       
   }
@@ -154,7 +154,7 @@ input[type=submit] {
 
 .col-75 {
   float: left;
-  width: 75%;
+  width: 60%;
   margin-top: 6px;
 }
 

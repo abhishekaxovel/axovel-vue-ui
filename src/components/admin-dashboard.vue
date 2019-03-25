@@ -1,8 +1,9 @@
 <template>
 <div>
+  <!-- <P>{{email}}</P> -->
     <h3>Admin Page</h3>
     <div class="details">
-         <!-- <p>{{email}}</p> -->
+         <div>{{admin}}</div>
      </div>
      <div class="logout">
          <button type="button" class="btn btn-primary" @click="logOut">LogOut</button>
@@ -12,26 +13,26 @@
 
 <script>
 import axios from 'axios'
-import LogIn from './LogIn'
 
 export default {
-  // props: ['details'],
+
+  prop: {
+    email: ''
+  },
+ 
   data(){
     return{
-      details: null
+      admin: ''
     }
   },
   created(){
-  // LogIn.$on('Selected', (details) => {
-  //  this.details = details;
-  // });
+      // console.log(this.user)
   },
     methods: {
     logOut(){
         console.log('in log out func...');
-        this.$router.push('/');
         // this.$session.destroy();
-        // this.$router.push('/');
+        this.$router.push('/');
     }
 
   }
