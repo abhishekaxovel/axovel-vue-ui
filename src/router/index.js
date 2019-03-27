@@ -7,7 +7,9 @@ import LogIn from '@/components/LogIn'
 import UserLogIn from '@/components/UserLogIn'
 import userdashboard from '@/components/user-dashboard'
 import admindashboard from '@/components/admin-dashboard'
+import event_list from '@/components/event-list'
 import forgotPassword from '@/components/forgotPassword'
+import demo from '@/components/demo'
 
 Vue.use(Router)
 
@@ -34,6 +36,11 @@ export default new Router({
       component: User
     },
     {
+      path: '/demo',
+      name: 'Demo',
+      component: demo
+    },
+    {
       path: '/admin-dash',
       name: 'Admin-Dash',
       component: admindashboard,
@@ -41,6 +48,11 @@ export default new Router({
         requiresAuth: true,
         is_admin : true
         }
+    },
+    {
+      path: '/event-list',
+      name: 'Event-List',
+      component: event_list
     },
     {
       path: '/user-dash',

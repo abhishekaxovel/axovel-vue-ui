@@ -52,6 +52,7 @@ import router from '../router/index.js'
 import jwt_decode from 'jwt-decode'
 import adminDashboardVue from './admin-dashboard'
 import userDashboardVue from './user-dashboard'
+import Toasted from 'vue-toasted';
 
 export default {
 
@@ -62,6 +63,15 @@ data () {
             submitted: false
         }
     },
+
+beforeCreate() {
+    console.log('session exists => ', localStorage.getItem('jwt'));
+    if(localStorage.getItem('jwt')){
+        this.$router.push('/admin-dash')
+    }else{
+      this.$router.push('/')
+    }
+},
 
 components: {
       userDashboardVue,
@@ -89,9 +99,11 @@ methods:{
         console.log('decode....',decoded);
         var details = decoded.user;
         var userEmail = decoded.user.email;
+        // this.$toasted.show('log in successfully....')
         console.log('user mail...', userEmail);
         console.log('user details...',details);
         localStorage.setItem('jwt', response.data.token);
+        localStorage.getItem('jwt');
         console.log('user res here...',response.data.token);
         
             if(decoded.data == true && decoded.role == 'admin'){
@@ -104,6 +116,7 @@ methods:{
             }
             else{
               console.log('user not found');
+              // this.$toasted.show('user not found')
             }
       })
             .catch(function (err) {

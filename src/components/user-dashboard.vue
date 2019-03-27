@@ -21,10 +21,21 @@ export default {
       user: ''
     }
   },
+
+ beforeCreate(){
+    console.log('local storage... ', localStorage.getItem('jwt'));
+    if(localStorage.getItem('jwt') != null){
+      this.$router.push('/user-dash')
+    }else{
+      this.$router.push('/')
+    }
+  },
+
+
     methods: {
     logOut(){
         console.log('in log out func...');
-        // this.$session.destroy();
+        localStorage.removeItem('jwt');
         this.$router.push('/');
     }
 
