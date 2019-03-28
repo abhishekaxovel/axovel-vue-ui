@@ -17,7 +17,10 @@ export default {
   components: {
     Toolbar,
     Footer
-  }
+  },
+mounted() {
+        process.env.ROOT_API
+},
 }
 </script>
 

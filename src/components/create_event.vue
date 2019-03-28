@@ -1,17 +1,7 @@
 <template>
 <div>
-  <!-- <P>{{email}}</P> -->
-    <h3>Admin Page</h3>
-      <div class="details">
-          <div>{{admin}}</div>
-      </div>
 
-     <div class="logout">
-         <button type="button" class="btn btn-primary" @click="logOut">LogOut</button>
-     </div>
-<hr>
-
-  <!-- <div>
+  <div>
     <form id="newUserform" @submit="submitForm">
     <div class="row">
       <div class="col-25">
@@ -28,6 +18,15 @@
       </div>
       <div class="col-75">
         <input type="text" id="event_type" name="event_type" placeholder="Event type here..">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-25">
+        <label for="event_type">Mobile</label>
+      </div>
+      <div class="col-75">
+        <input type="text" id="contacts" name="event_contacts" placeholder="Event contact number here..">
       </div>
     </div>
 
@@ -52,55 +51,95 @@
         <textarea id="address" name="address" placeholder="Enter full address here.." style="height:200px"></textarea>
       </div>
     </div>
-    <div class="pull-right">
+    <!-- <div class="pull-right">
       <button type="button" class="btn btn-primary" @click="submitForm">Create event</button>
-    </div>
+    </div> -->
   </form>
-     </div> -->
+  
+            <button type="button" class="btn btn-primary" @click="addSchedule">Add schedule</button>
 
-<Event />
 
+<form id="eventform" v-if="eventForm">
+    <div v-for="(item, key) in event_schedule" :key="key">
+        <div class="row">
+        <div class="col-25">
+            <label for="event_name">Event place</label>
+        </div>
+        <div class="col-75">
+            <input type="text" id="event_place" name="event_place" v-model="item.place" placeholder="Event place here..">
+        </div>
+        </div>
+
+        <div class="row">
+        <div class="col-25">
+            <label for="event_type">Event details</label>
+        </div>
+        <div class="col-75">
+            <input type="text" id="event_details" name="event_details" v-model="item.details" placeholder="Event details here..">
+        </div>
+        </div>
+    </div>
+    
+
+        <button v-if="event_schedule.length > 0" type="button" class="btn btn-primary" @click="addMore">Add more</button>
+        <button v-if="event_schedule.length > 1" type="button" class="btn btn-primary" @click="remove">Remove</button>
+</form>
+
+
+ <div class="pull-right">
+      <button type="button" class="btn btn-primary" @click="submitForm">Create event</button>
+</div>
+
+    </div>
 </div>
 </template>
 
 <script>
 import axios from 'axios'
-import Event from './create_event'
 
 export default {
 
 data(){
     return{
-      admin: ''
+        eventForm: false,
+        event_schedule: [
+            {place: '', details: ''}
+        ]
     }
   },
-components: {Event},
-
-beforeCreate(){
-    console.log('local storage... ', localStorage.getItem('jwt'));
-    if(localStorage.getItem('jwt') != null){
-      this.$router.push('/admin-dash')
-    }else{
-      this.$router.push('/')
-    }
-  }, 
+ 
 created(){
-   
+    
   },
 methods: {
-    logOut(){
-          console.log('in log out func...');
-          localStorage.removeItem('jwt');
-          this.$router.push('/');
-      },
 
+    addSchedule(){
+            this.eventForm = true;
+    },
+
+    addMore(){
+        let data = {place: '', details: ''}
+        if(this.event_schedule.length < 5){
+            this.event_schedule.push(data);
+        }
+    },
+
+    remove(){
+        let data = {place: '', details: ''}
+        if(this.event_schedule){
+            this.event_schedule.pop(data);
+        }
+    },
+    
     submitForm(){
       let password = Math.random().toString(36).slice(-8);
       let eventData = new FormData();
       eventData.event_name = event_name.value;
       eventData.event_type = event_type.value;
+      eventData.contacts = contacts.value;
       eventData.address = address.value;
       eventData.country = country.value;
+      eventData.event_schedule = this.event_schedule;
       console.log('form data ...', eventData);
       
     axios({
@@ -144,13 +183,11 @@ input[type=text], select, textarea{
   resize: vertical;
 }
 
-/* Style the label to display next to the inputs */
 label {
   padding: 12px 12px 12px 0;
   display: inline-block;
 }
 
-/* Style the submit button */
 input[type=submit] {
   background-color: #4CAF50;
   color: white;
@@ -161,35 +198,30 @@ input[type=submit] {
   float: right;
 }
 
-/* Style the container */
 .container {
   border-radius: 5px;
   background-color: #f2f2f2;
   padding: 20px;
 }
 
-/* Floating column for labels: 25% width */
 .col-25 {
   float: left;
   width: 25%;
   margin-top: 6px;
 }
 
-/* Floating column for inputs: 75% width */
 .col-75 {
   float: left;
   width: 75%;
   margin-top: 6px;
 }
 
-/* Clear floats after the columns */
 .row:after {
   content: "";
   display: table;
   clear: both;
 }
 
-/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
 @media screen and (max-width: 600px) {
   .col-25, .col-75, input[type=submit] {
     width: 100%;

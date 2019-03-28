@@ -10,8 +10,11 @@ import admindashboard from '@/components/admin-dashboard'
 import event_list from '@/components/event-list'
 import forgotPassword from '@/components/forgotPassword'
 import demo from '@/components/demo'
+import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
 
 Vue.use(Router)
+Vue.use(Vuetify)
 
 export default new Router({
   routes: [

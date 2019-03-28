@@ -8,7 +8,7 @@
         vertical
       ></v-divider>
       <v-spacer></v-spacer>
-      <v-dialog v-model="dialog" max-width="500px">
+      <v-dialog v-model="dialog" max-width="500px" min-height="404px">
         <template v-slot:activator="{ on }">
           <v-btn color="primary" dark class="mb-2" v-on="on">New Event</v-btn>
         </template>
@@ -38,6 +38,35 @@
                 <v-flex xs12 sm6 md4>
                   <v-text-field v-model="editedItem.event_schedule" label="Event Schedule"></v-text-field>
                 </v-flex>
+
+                <v-flex xs12 sm6 md4>
+                      <v-dialog
+                        ref="dialog"
+                        v-model="modal"
+                        :return-value.sync="date"
+                        persistent
+                        lazy
+                        full-width
+                        width="290px"
+                      >
+                        <template v-slot:activator="{ on }">
+                          <v-text-field
+                            v-model="date"
+                            label="Picker in dialog"
+                            prepend-icon="event"
+                            readonly
+                            v-on="on"
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker v-model="date" scrollable>
+                          <v-spacer></v-spacer>
+                          <v-btn flat color="primary" @click="modal = false">Cancel</v-btn>
+                          <v-btn flat color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
+                        </v-date-picker>
+                      </v-dialog>
+                  </v-flex>
+
+
               </v-layout>
             </v-container>
           </v-card-text>
@@ -84,10 +113,10 @@ export default {
 
 data: () => ({
       dialog: false,
-      picker: null,
-      picker: new Date().toISOString().substr(0, 10),
-      landscape: false,
-      reactive: false,
+      date: new Date().toISOString().substr(0, 10),
+      menu: false,
+      modal: false,
+      menu2: false,
       headers: [
         // { text: 'Events', align: 'left', sortable: false, value: 'type'},
         { text: 'Event name', value: 'type'},
@@ -132,7 +161,7 @@ watch: {
 
 created () {
       
-      axios.get(`http://localhost:3200/users/get_event`)
+      axios.get(`http://localhost:3200/event/get_event`)
         .then(res => {
         this.events = res.data
         console.log('res here...', res.data);
@@ -161,7 +190,7 @@ methods: {
         confirm('Are you sure you want to delete this event?') && this.events.splice(index, 1)
         axios({
         method: 'post',
-        url: 'http://localhost:3200/users/delete_event',
+        url: 'http://localhost:3200/event/delete_event',
         data: {item},
         config: { 
         headers: {'Content-Type': 'application/json'}
@@ -187,7 +216,7 @@ methods: {
           Object.assign(item,this.events[this.editedIndex])
           axios({
               method: 'post',
-              url: 'http://localhost:3200/users/update_event',
+              url: 'http://localhost:3200/event/update_event',
               data: {item},
               config: { 
               headers: {'Content-Type': 'application/json'}
@@ -203,7 +232,7 @@ methods: {
           let item = this.editedItem
               axios({
               method: 'post',
-              url: 'http://localhost:3200/users/create_event',
+              url: 'http://localhost:3200/event/create_event',
               data: {item},
               config: { 
               headers: {'Content-Type': 'application/json'}
