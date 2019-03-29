@@ -1,8 +1,6 @@
 <template>
 <div>
-  <!-- <P>{{email}}</P> -->
     <h3>User Page</h3>
-    <div>{{user}}</div>
      <div class="logout">
          <button type="button" class="btn btn-primary" @click="logOut">LogOut</button>
      </div>
@@ -18,7 +16,7 @@ export default {
   },
   data(){
     return{
-      user: ''
+
     }
   },
 
