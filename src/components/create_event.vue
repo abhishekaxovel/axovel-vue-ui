@@ -52,6 +52,10 @@
       </div>
     </div>
   </form>
+
+        <div class="large-12 medium-12 small-12 cell">
+            <label>Schedules</label>
+        </div>
   
             <button type="button" class="btn btn-primary" @click="addSchedule">Add schedule</button>
 
@@ -98,7 +102,7 @@
     
 
         <button v-if="event_schedule.length > 0" type="button" class="btn btn-primary" @click="addMore">Add more</button>
-        <button v-if="event_schedule.length > 1" type="button" class="btn btn-primary" @click="remove">Remove</button>
+        <button v-if="event_schedule.length > 1" type="button" class="btn btn-danger" @click="remove">Remove</button>
 </form>
 
 
@@ -121,12 +125,12 @@
         <div class="large-12 medium-12 small-12 cell clear">
         <button class="btn btn-primary" v-on:click="addFiles()">Add Files</button>
         <button v-if="files.length > 0" class="btn btn-danger" v-on:click="removeFiles()">Remove Files</button>
-        <button class="btn btn-success" v-on:click="submitFiles()">Upload image</button>
+        <button v-if="files.length" class="btn btn-success" v-on:click="submitFiles()">Upload Files</button>
         </div>
     </div>
 
-
- <div class="pull-right">
+<hr>
+<div class="pull-right">
       <button type="button" class="btn btn-success" @click="submitForm">Create event</button>
 </div>
 
@@ -141,9 +145,9 @@ export default {
 
 data(){
     return{
+        baseUrl:  'http://localhost:3200/event',
+        selectedFile: '',
         files: [],
-        showPreview: false,
-        imagePreview: '',
         eventForm: false,
         event_schedule: [
             {place: '', details: '', date: '', time: ''}
@@ -155,7 +159,6 @@ created(){
     
   },
 methods: {
-
 
     addFiles(){
         this.$refs.files.click();
@@ -170,27 +173,42 @@ methods: {
         for( var i = 0; i < this.files.length; i++ ){
           let file = this.files[i];
           formData.append('files[' + i + ']', file);
+          // formData.append('file',file);
+          // formData.get('file');
+          // console.log('image uploaded...', file);
         }
-        console.log('image uploaded...');
-        // axios.post( 'http://localhost:3200/users/create_event',
-        //   formData,
-        //   {
-        //     headers: {
-        //         'Content-Type': 'multipart/form-data'
-        //     }
-        //   }
-        // ).then(function(){
-        //   console.log('SUCCESS!!');
-        // })
-        // .catch(function(){
-        //   console.log('FAILURE!!');
-        // });
+        console.log('formdata', formData);
+        for (var key of formData.entries()) {
+              console.log(key[0], key[1]);
+              }
+        // var image = formData.get('file');
+        // console.log('image details', image);
+        // var image = image.name
+        // this.selectedFile = image
+        // console.log('image name', image);
+        // console.log('selected file...', this.selectedFile);
+        // console.log('formdata', formData);
+        axios({
+          method: 'post',
+          url: this.baseUrl + '/imageUpload',
+          data:  {formData},
+          config: { 
+            headers: {'Content-Type': 'multipart/form-data'}
+            }
+          })
+          .then(function (response) {
+              console.log('res here',response);
+          })
+          .catch(function (response) {
+              console.log('err here',response);
+          }); 
       },
 
     handleFilesUpload(){
         let uploadedFiles = this.$refs.files.files;
         for( var i = 0; i < uploadedFiles.length; i++ ){
           this.files.push( uploadedFiles[i] );
+          console.log('uploaded files...',uploadedFiles[i]);
         }
         this.getImagePreviews();
       },
@@ -233,11 +251,12 @@ methods: {
       eventData.address = address.value;
       eventData.country = country.value;
       eventData.event_schedule = this.event_schedule;
-      eventData.event_images = this.files;
+      // eventData.event_images = this.files;
+      eventData.event_images = this.selectedFile;
       console.log('form data ...', eventData);    
     axios({
     method: 'post',
-    url: 'http://localhost:3200/users/create_event',
+    url: this.baseUrl + '/create_event',
     data: {eventData} ,
     config: { 
       headers: {'Content-Type': 'application/json'}
@@ -336,7 +355,7 @@ input[type=submit] {
     top: -500px;
   }
   div.file-listing img{
-    max-width: 90%;
+    max-width: 60%;
   }
 
 </style>

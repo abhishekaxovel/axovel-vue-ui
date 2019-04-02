@@ -31,7 +31,7 @@ data(){
 },
 
 beforeCreate(){
-    console.log('local storage... ', localStorage.getItem('jwt'));
+    // console.log('local storage... ', localStorage.getItem('jwt'));
     if(localStorage.getItem('jwt') != null){
       this.$router.push('/admin-dash')
     }else{
