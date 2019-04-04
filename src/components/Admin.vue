@@ -4,25 +4,25 @@
 
   <div> <h1> Register here </h1> </div>
 
-          <!-- <div>
-            <h1 style="display: -webkit-box;"> {{ msg }} </h1>
-            <v-btn color="warning" fab dark>
-              <v-icon>account_circle</v-icon>
-            </v-btn>
-          </div> -->
 
-              <!-- <User></User> -->
+          <!-- <p v-if="errors.length">
+            <b>Please correct the following error(s):</b>
+            <ul>
+              <li v-for="error in errors" :key="error">{{ error }}</li>
+            </ul>
+          </p> -->
               <hr>
   <div>
 
 <div class="container">
-  <form id="newUserform" @submit="submitForm">
+  <form id="newUserform" @submit.prevent="checkForm">
     <div class="row">
       <div class="col-25">
         <label for="fname">First Name</label>
       </div>
       <div class="col-75">
-        <input type="text" id="fname" name="firstname" placeholder="Your first name..">
+        <input type="text" v-model="fname" name="firstname" placeholder="Your first name..">
+         <div v-for="fields in fields" :key="fields">{{fields}}</div>
       </div>
     </div>
     <div class="row">
@@ -30,23 +30,29 @@
         <label for="lname">Last Name</label>
       </div>
       <div class="col-75">
-        <input type="text" id="lname" name="lastname" placeholder="Your last name..">
+        <input type="text" v-model="lname" name="lastname" placeholder="Your last name..">
       </div>
     </div>
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-25">
         <label for="mobile">Mobile</label>
       </div>
       <div class="col-75">
         <input type="text" id="mobile" name="mobile" placeholder="Your Mobile Number..">
       </div>
-    </div>
+    </div> -->
     <div class="row">
       <div class="col-25">
         <label for="email">Email</label>
       </div>
+      <!-- <div class="col-75">
+        <input type="text" v-model="email" name="email" placeholder="Your email address.." 
+          class="form-control" :class="{ 'is-invalid': submitted && !email }">
+          <div v-show="submitted && !email" class="invalid-feedback">Email is required</div>
+      </div> -->
       <div class="col-75">
-        <input type="text" id="email" name="email" placeholder="Your email address..">
+        <input type="text" v-model="email" name="email" placeholder="Your email address..">
+          <div v-for="error in errors" :key="error">{{error}}</div>
       </div>
     </div>
     <div class="row">
@@ -86,6 +92,7 @@
 <script>
 import User from './User'
 import axios from 'axios'
+import router from '../router/index.js'
 
 export default {
 name: 'Admin',
@@ -94,9 +101,13 @@ components: {
 },
  data () {
     return {
-      name: String,
-      desc: String,
-      msg: 'Welcome Admin'
+      user: '',
+      errors: [],
+      fields: [],
+      email: '',
+      fname: '',
+      lname: '',
+      submitted: false
     }
   },
 created() {
@@ -116,34 +127,83 @@ created() {
   console.log(process.env.ROOT_API)
 },
   methods: {
-    submitForm(){
-      let password = Math.random().toString(36).slice(-8);
-      let userData = new FormData();
-      userData.firstname = fname.value;
-      userData.lastname = lname.value;
-      userData.mobile = mobile.value;
-      userData.email = email.value;
-      userData.address = address.value;
-      userData.country = country.value;
-      userData.password = password;
-      // console.log('generated password', password);
-      console.log('form data ...', userData);
-      
-    axios({
-    method: 'post',
-    url: 'http://localhost:3200/users/create',
-    data: {userData} ,
-    config: { 
-      headers: {'Content-Type': 'application/json'}
+
+ checkForm: function (e) {
+      this.errors = [];
+      if (!this.email) {
+        this.errors.push('Email required.');
+      } else if (!this.validEmail(this.email)) {
+        this.errors.push('Valid email required.');
       }
-    })
-    .then(function (response) {
-        console.log('res here',response);
-    })
-    .catch(function (response) {
-        console.log('err here',response);
-    });
-     this.$router.push({ path : '/' });
+
+      if (!this.errors.length) {
+        return true;
+      }
+      // e.preventDefault();
+    },
+
+    validEmail: function (email) {
+      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
+    },
+
+
+    checkField: function (e) {
+      this.fields = [];
+      if (!this.fname) {
+        this.fields.push("First Name required.");
+      }
+      if (!this.fields.length) {
+        return true;
+      }
+      // e.preventDefault();
+    },
+
+
+
+    submitForm(){
+      this.submitted = true;
+      this.checkField();
+      this.checkForm();
+      if(this.fname && this.email && this.validEmail(this.email)){
+            let password = Math.random().toString(36).slice(-8);
+            let role = 'user';
+            let userData = new FormData();
+            userData.firstname = this.fname;
+            userData.lastname = this.lname;
+            // userData.mobile = mobile.value;
+            userData.email = this.email;
+            userData.address = address.value;
+            userData.country = country.value;
+            userData.password = password;
+            userData.role = role;
+            // console.log('form data ...', userData);
+            
+            axios({
+            method: 'post',
+            url: 'http://localhost:3200/users/create',
+            data: {userData} ,
+            config: { 
+              headers: {'Content-Type': 'application/json'}
+              }
+            })
+            .then(function (response) {
+              const user = response.data.message
+              console.log('user.....',user);
+              console.log('res here',response);
+              if(user == 'user created'){
+                alert('user created');
+                router.replace('/user');
+               }
+               else{
+                 alert('user exists');
+               }
+            })
+            .catch(function (response) {
+                console.log('err here',response);
+            });     
+        }
+      
     }
   }
 }

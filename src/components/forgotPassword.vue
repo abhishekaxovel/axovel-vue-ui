@@ -1,16 +1,17 @@
 <template>
 <div class="container">
-  <form id="logInForm">
+  <form id="forgotPassword">
     <div class="row">
       <div class="col-25">
         <label for="email">Email</label>
       </div>
       <div class="col-75">
-        <input type="email" id="email" name="email" placeholder="enter your email here" required>
+        <input type="email" v-model="email" name="email" placeholder="enter your email here" required>
+        <div v-for="error in errors" :key="error">{{error}}</div>
       </div>
     </div>
     <div class="pull-right">
-      <button type="button" class="btn btn-success" @click="LogInForm">change password</button>
+      <button type="button" class="btn btn-success" @click="forgotPassword">change password</button>
     </div>
   </form>
 </div>
@@ -22,25 +23,62 @@ import router from '../router/index.js'
 
 export default {
 
+  data(){
+    return{
+      errors: [],
+      email: ''
+    }
+  },
+
 methods:{
-    LogInForm(){
-        let logIn = new FormData()
-        logIn.email = email.value
+
+ checkForm: function (e) {
+      this.errors = [];
+      if (!this.email) {
+        this.errors.push('Email required.');
+      } else if (!this.validEmail(this.email)) {
+        this.errors.push('Valid email required.');
+      }
+
+      if (!this.errors.length) {
+        return true;
+      }
+      // e.preventDefault();
+    },
+
+    validEmail: function (email) {
+      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
+    },
+
+
+
+    forgotPassword(){
+      if(this.checkForm()){
+        let forgot = new FormData()
+        forgot.email = this.email
         axios({
         method: 'post',
-        url: 'http://localhost:5400/users/logIn',
-        data: {logIn},
+        url: 'http://localhost:3200/users/forgot_password',
+        data: {forgot},
         config: { 
         headers: {'Content-Type': 'application/json'}
         }
-    })
-      .then(function (response) {
-        console.log('user res here...',response.data);
       })
-            .catch(function (response) {
-                console.log('err here',response);
-            });
-      }
+        .then(function (response) {
+          console.log('user res here...',response.data);
+        })
+              .catch(function (err) {
+                  console.log('err here',err);
+              });
+              if(this.email){
+                alert("Reset password link send");
+                router.replace('/update-password');
+              }else{
+                alert("email required");
+              }
+      }          
+    }
       
   }
 }

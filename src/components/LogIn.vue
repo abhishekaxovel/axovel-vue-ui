@@ -7,7 +7,7 @@
         <label for="email">Email</label>
       </div>
       <div class="col-75">
-        <input type="email" id="email" name="email" placeholder="enter your email here"
+        <input type="email" v-model="email" name="email" placeholder="enter your email here"
         class="form-control" :class="{ 'is-invalid': submitted && !email }">
         <div v-show="submitted && !email" class="invalid-feedback">Email is required</div>
       </div>
@@ -18,7 +18,7 @@
         <label for="password">Password</label>
       </div>
       <div class="col-75">
-        <input type="password" id="password" name="password" placeholder="enter your password here"
+        <input type="password" v-model="password" name="password" placeholder="enter your password here"
         class="form-control" :class="{ 'is-invalid': submitted && !password }">
         <div v-show="submitted && !password" class="invalid-feedback">Password is required</div>
       </div>
@@ -30,19 +30,13 @@
 
   </form>
 
-                
-                      <!-- <div style="display: -webkit-box;">
-                          <router-link to="/forgot-password">Forgot password</router-link>
-                      </div> -->
 
                       <div>
                         <router-link style="margin: 10px" to="/forgot-password">Forgot password</router-link>
                         New user <router-link style="margin: 3px" to="/admin">Register here</router-link>
                       </div>
 
-          <!-- <userDashboardVue /> -->
-          <!-- <adminDashboardVue :email="email"/>       -->
-
+         
 </div>
 </template>
 
@@ -52,7 +46,6 @@ import router from '../router/index.js'
 import jwt_decode from 'jwt-decode'
 import adminDashboardVue from './admin-dashboard'
 import userDashboardVue from './user-dashboard'
-import Toasted from 'vue-toasted';
 
 export default {
 
@@ -81,11 +74,11 @@ components: {
 methods:{
     LogInForm(){
         console.log('in log in function....');
-        this.submitted = false;
+        this.submitted = true
+        if(this.email && this.password){
         let logIn = new FormData()
-        logIn.email = email.value
-        logIn.password = password.value
-
+        logIn.email = this.email
+        logIn.password = this.password
         axios({
         method: 'post',
         url: 'http://localhost:3200/users/logIn',
@@ -93,18 +86,18 @@ methods:{
         config: { 
         headers: {'Content-Type': 'application/json'}
         }
-    })
-      .then(function (response) {
-        var decoded = jwt_decode(response.data.token);
-        console.log('decode....',decoded);
-        var details = decoded.user;
-        var userEmail = decoded.user.email;
-        // this.$toasted.show('log in successfully....')
-        console.log('user mail...', userEmail);
-        console.log('user details...',details);
-        localStorage.setItem('jwt', response.data.token);
-        localStorage.getItem('jwt');
-        console.log('user res here...',response.data.token);
+        })
+          .then(function (response) {
+            var decoded = jwt_decode(response.data.token);
+            console.log('decode....',decoded);
+            var details = decoded.user;
+            var userEmail = decoded.user.email;
+            // this.$toasted.show('log in successfully....')
+            console.log('user mail...', userEmail);
+            console.log('user details...',details);
+            localStorage.setItem('jwt', response.data.token);
+            localStorage.getItem('jwt');
+            console.log('user res here...',response.data.token);
         
             if(decoded.data == true && decoded.role == 'admin'){
                 console.log('admin page');
@@ -114,14 +107,17 @@ methods:{
                 console.log('user page');  
                 router.replace('/user-dash');
             }
-            else{
+            else if(!this.email && !this.password){
+              alert('user not found');
               console.log('user not found');
-              // this.$toasted.show('user not found')
             }
-      })
+            })
             .catch(function (err) {
+                alert('email or password not correct !!!');
                 console.log('err here',err);
             });
+        }
+
       }
       
   }

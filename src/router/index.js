@@ -9,6 +9,7 @@ import userdashboard from '@/components/user-dashboard'
 import admindashboard from '@/components/admin-dashboard'
 import event_list from '@/components/event-list'
 import forgotPassword from '@/components/forgotPassword'
+import updatePassword from '@/components/updatePassword'
 import demo from '@/components/demo'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
@@ -74,6 +75,11 @@ export default new Router({
       path: '/forgot-password',
       name: 'forgotpassword',
       component: forgotPassword
+    },
+    {
+      path: '/update-password',
+      name: 'updatepassword',
+      component: updatePassword
     }
   ]
 })
