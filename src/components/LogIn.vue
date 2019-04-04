@@ -8,9 +8,13 @@
       </div>
       <div class="col-75">
         <input type="email" v-model="email" name="email" placeholder="enter your email here"
-        class="form-control" :class="{ 'is-invalid': submitted && !email }">
+        class="form-control" :class="{ 'is-invalid': submitted && !email }" autofocus>
         <div v-show="submitted && !email" class="invalid-feedback">Email is required</div>
       </div>
+      <!-- <div class="col-75">
+        <input type="email" v-model="email" name="email" placeholder="Your email address.." @keyup="checkForm" autofocus>
+          <div v-for="error in errors" :key="error" autofocus>{{error}}</div>
+      </div> -->
     </div>
 
     <div class="row">
@@ -22,10 +26,14 @@
         class="form-control" :class="{ 'is-invalid': submitted && !password }">
         <div v-show="submitted && !password" class="invalid-feedback">Password is required</div>
       </div>
+      <!-- <div class="col-75">
+        <input type="password" v-model="password" name="password" placeholder="Your password here..">
+          <div v-for="field in fields" :key="field">{{field}}</div>
+      </div> -->
     </div>
 
     <div class="pull-right">
-      <button type="button" class="btn btn-success" @click="LogInForm">Log In</button>
+      <button type="button" class="btn btn-primary" @click="LogInForm">Log In</button>
     </div>
 
   </form>
@@ -51,9 +59,12 @@ export default {
 
 data () {
         return {
+            errors: [],
+            fields: [],
+            submitted: false,
             email: '',
             password: '',
-            submitted: false
+            valid : false
         }
     },
 
@@ -72,8 +83,11 @@ components: {
   },
 
 methods:{
+
     LogInForm(){
         console.log('in log in function....');
+        // this.checkForm();
+        // this.checkField();
         this.submitted = true
         if(this.email && this.password){
         let logIn = new FormData()
@@ -92,13 +106,11 @@ methods:{
             console.log('decode....',decoded);
             var details = decoded.user;
             var userEmail = decoded.user.email;
-            // this.$toasted.show('log in successfully....')
             console.log('user mail...', userEmail);
             console.log('user details...',details);
             localStorage.setItem('jwt', response.data.token);
             localStorage.getItem('jwt');
             console.log('user res here...',response.data.token);
-        
             if(decoded.data == true && decoded.role == 'admin'){
                 console.log('admin page');
                 router.replace('/admin-dash');
@@ -106,8 +118,7 @@ methods:{
             else if(decoded.data == true && decoded.role == 'user'){
                 console.log('user page');  
                 router.replace('/user-dash');
-            }
-            else if(!this.email && !this.password){
+            }else if(this.email != data.email){
               alert('user not found');
               console.log('user not found');
             }
@@ -118,8 +129,7 @@ methods:{
             });
         }
 
-      }
-      
+      }    
   }
 }
 </script>
@@ -151,7 +161,7 @@ input[type=submit] {
 
 .container {
   border-radius: 5px;
-  background-color: #f2f2f2;
+  width: 700px;
   padding: 20px;
 }
 

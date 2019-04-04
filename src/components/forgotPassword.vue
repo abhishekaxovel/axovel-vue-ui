@@ -6,12 +6,12 @@
         <label for="email">Email</label>
       </div>
       <div class="col-75">
-        <input type="email" v-model="email" name="email" placeholder="enter your email here" required>
+        <input type="email" v-model="email" name="email" placeholder="enter your email here" autofocus>
         <div v-for="error in errors" :key="error">{{error}}</div>
       </div>
     </div>
     <div class="pull-right">
-      <button type="button" class="btn btn-success" @click="forgotPassword">change password</button>
+      <button type="button" class="btn btn-primary" @click="forgotPassword">submit</button>
     </div>
   </form>
 </div>
@@ -111,7 +111,7 @@ input[type=submit] {
 
 .container {
   border-radius: 5px;
-  background-color: #f2f2f2;
+  /* background-color: #f2f2f2; */
   padding: 20px;
 }
 

@@ -21,8 +21,8 @@
         <label for="fname">First Name</label>
       </div>
       <div class="col-75">
-        <input type="text" v-model="fname" name="firstname" placeholder="Your first name..">
-         <div v-for="fields in fields" :key="fields">{{fields}}</div>
+        <input type="text" v-model="fname" name="firstname" placeholder="Your first name.." autofocus>
+         <div v-for="fields in fields" :key="fields" style="color: red">{{fields}}</div>
       </div>
     </div>
     <div class="row">
@@ -51,8 +51,8 @@
           <div v-show="submitted && !email" class="invalid-feedback">Email is required</div>
       </div> -->
       <div class="col-75">
-        <input type="text" v-model="email" name="email" placeholder="Your email address..">
-          <div v-for="error in errors" :key="error">{{error}}</div>
+        <input type="text" v-model="email" name="email" placeholder="Your email address.." autofocus>
+          <div v-for="error in errors" :key="error" autofocus style="color: red">{{error}}</div>
       </div>
     </div>
     <div class="row">
@@ -74,6 +74,9 @@
       </div>
       <div class="col-75">
         <textarea id="address" name="address" placeholder="Enter full address here.." style="height:200px"></textarea>
+        <!-- <div v-if="ValidationMessages">
+            <div v-for="address in address" :key="address">{{address.message}}</div>
+        </div> -->
       </div>
     </div>
     <div class="pull-right">
@@ -107,7 +110,20 @@ components: {
       email: '',
       fname: '',
       lname: '',
-      submitted: false
+      submitted: false,
+
+
+      // ValidationMessages: {
+      //     mobile: [
+      //       { type: 'required', message: 'mobile is required' },
+      //       { type: 'minlength', message: 'must be 10 number long' }
+      //     ],
+      //     address: [
+      //       { type: 'required', message: 'address is required' }
+      //     ]
+      //   }
+
+
     }
   },
 created() {
@@ -166,6 +182,8 @@ created() {
       this.checkField();
       this.checkForm();
       if(this.fname && this.email && this.validEmail(this.email)){
+
+            let uId = Math.random().toString(36).slice(-10);
             let password = Math.random().toString(36).slice(-8);
             let role = 'user';
             let userData = new FormData();
@@ -176,6 +194,7 @@ created() {
             userData.address = address.value;
             userData.country = country.value;
             userData.password = password;
+            userData.uId = uId;
             userData.role = role;
             // console.log('form data ...', userData);
             
@@ -243,7 +262,7 @@ input[type=submit] {
 /* Style the container */
 .container {
   border-radius: 5px;
-  background-color: #f2f2f2;
+  /* background-color: #f2f2f2; */
   padding: 20px;
 }
 

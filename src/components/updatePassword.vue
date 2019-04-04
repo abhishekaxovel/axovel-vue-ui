@@ -1,6 +1,6 @@
 <template>
 <div>
-    <form id="forgotPassword">
+    <form id="forgotPassword" class="container">
     <div class="row">
       <div class="col-25">
         <label for="email">Unique Id</label>
@@ -119,7 +119,8 @@ input[type=submit] {
 
 .container {
   border-radius: 5px;
-  background-color: #f2f2f2;
+  width: 700px;
+  /* background-color: #f2f2f2; */
   padding: 20px;
 }
 

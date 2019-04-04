@@ -1,249 +1,113 @@
 <template>
-  <div>
-    <v-toolbar flat color="white">
-      <v-toolbar-title>Event List Page</v-toolbar-title>
-      <v-divider
-        class="mx-2"
-        inset
-        vertical
-      ></v-divider>
-      <v-spacer></v-spacer>
-      <v-dialog v-model="dialog" max-width="500px" class="dialog">
-        <template v-slot:activator="{ on }">
-          <v-btn color="primary" dark class="mb-2" v-on="on">New Event</v-btn>
-        </template>
-        <v-card>
-          <v-card-title>
-            <span class="headline">{{ formTitle }}</span>
-          </v-card-title>
+  <div class="container">
+    <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+      <b-form-group
+        id="input-group-1"
+        label="Email address:"
+        label-for="input-1"
+      >
+        <b-form-input
+          id="input-1"
+          v-model="email"
+          type="email"
+          required
+          placeholder="Enter email"
+        ></b-form-input>
+      </b-form-group>
 
-          <v-card-text>
-            <v-container grid-list-md>
-              <v-layout wrap>
-                <v-flex xs12 sm6 md4>
-                  <v-text-field v-model="editedItem.event_name" label="Event name"></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm6 md4>
-                  <v-text-field v-model="editedItem.event_type" label="Event type"></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm6 md4>
-                  <v-text-field v-model="editedItem.address" label="Event city"></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm6 md4>
-                  <v-text-field v-model="editedItem.country" label="Event country"></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm6 md4>
-                  <v-text-field v-model="editedItem.contacts" label="Contacts"></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm6 md4>
-                  <v-text-field v-model="editedItem.event_schedule" label="Event Schedule"></v-text-field>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-card-text>
+      <b-form-group id="input-group-2" label="Your password:" label-for="input-2">
+        <b-form-input
+          id="input-2"
+          v-model="password"
+          type="password"
+          required
+          placeholder="Enter password"
+        ></b-form-input>
+      </b-form-group>
 
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
-            <v-btn color="blue darken-1" flat @click="save">Save</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-toolbar>
-    <v-data-table
-      :headers="headers"
-      :items="events"
-      class="elevation-1"
-    >
-      <template v-slot:items="props">
-        <td class="text-sm-left">{{ props.item.event_name }}</td>
-        <td class="text-sm-left">{{ props.item.event_type }}</td>
-        <td class="text-sm-left">{{ props.item.address }}</td>
-        <td class="text-sm-left">{{ props.item.country }}</td>
-        <td class="text-sm-left">{{ props.item.contacts }}</td>
-        <td class="justify-center layout px-0">
-          <v-icon
-            small
-            class="mr-2"
-            @click="editItem(props.item)"
-          >
-            edit
-          </v-icon>
-          <v-icon
-            small
-            @click="deleteItem(props.item)"
-          >
-            delete
-          </v-icon>
-        </td>
-      </template>
-      <template v-slot:no-data>
-        <v-btn color="primary" @click="initialize">Reset</v-btn>
-      </template>
-    </v-data-table>
+      <b-button type="submit" variant="primary">Submit</b-button>
+      <b-button type="reset" variant="danger">Reset</b-button>
+    </b-form>
   </div>
 </template>
-
 <script>
-import axios from 'axios'
+import axios from 'axios';
+import router from '../router/index.js'
+import jwt_decode from 'jwt-decode'
+import adminDashboardVue from './admin-dashboard'
+import userDashboardVue from './user-dashboard'
 
   export default {
-    data: () => ({
-      dialog: false,
-      headers: [
-        // { text: 'Events', align: 'left', sortable: false, value: 'type'},
-        { text: 'Event name', value: 'type'},
-        { text: 'Event type', value: 'city'},
-        { text: 'Event address', value: 'country'},
-        { text: 'Event country', value: 'contacts'},
-        { text: 'Contact', value: 'contacts'},
-        { text: 'Actions', value: 'name', sortable: false }
-      ],
-      events: [],
-      editedIndex: -1,
-      editedItem: {
-        event_name: '',
-        event_type: '',
-        address: '',
-        country: '',
-        contacts: '',
-        event_schedule: []
-
-      },
-      defaultItem: {
-        event_name: '',
-        event_type: '',
-        city: '',
-        country: '',
-        contacts: '',
-         event_schedule: []
-      }
-    }),
-
-    computed: {
-      formTitle () {
-        return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+    data() {
+      return {
+         email: '',
+         password: '',
+        form: {
+          email: '',
+          password: '',
+        },
+        show: true
       }
     },
-
-    watch: {
-      dialog (val) {
-        val || this.close()
-      }
-    },
-
-// beforeCreate(){
-//     const localVue = createLocalVue()
-//     localVue.use(Vuetify)
-// },
-
-    created () {
-      this.initialize()
-      // console.log('this.initialize()', this.initialize())
-      axios.get(`http://localhost:3200/users/get_event`)
-        .then(res => {
-        this.events = res.data
-        console.log('res here...', res.data);
-        })
-        .catch(e => {
-        console.log('err here...',e);
-        })
-    },
-
     methods: {
-      initialize () {
-        this.events = [
-          // {
-          //   event_name: 'Company event',
-          //   event_type: 'Demo',
-          //   address: 'axovel',
-          //   country: 'delhi',
-          //   contacts: 'india'
-          // },
-          //  {
-          //   event_name: 'Company event',
-          //   event_type: 'Aeo',
-          //   address: 'cvent',
-          //   country: 'new york',
-          //   contacts: 'usa'
-          // }
-        ]
-      },
-
-      editItem (item) {
-        this.editedIndex = this.events.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
-        console.log(' this.editedItem',  this.editedItem)
-      },
-
-      deleteItem (item) {
-        const index = this.events.indexOf(item)
-        confirm('Are you sure you want to delete this event?') && this.events.splice(index, 1)
-        axios({
-        method: 'post',
-        url: 'http://localhost:3200/users/delete_event',
-        data: {item},
-        config: { 
-        headers: {'Content-Type': 'application/json'}
-        }
-        })
-        .then(res => {
-          console.log('res....', res)
-        })
-        console.log('item', item)
-      },
-
-      close () {
-        this.dialog = false
-        setTimeout(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        }, 300)
-      },
-
-      save (item) {
-        if (this.editedIndex > -1) {
-          Object.assign(this.events[this.editedIndex], this.editedItem)
-          Object.assign(item,this.events[this.editedIndex])
+      onSubmit(evt) {
+        evt.preventDefault()
+          if(this.email && this.password){
+          let logIn = new FormData()
+          console.log(logIn)
+          logIn.email = this.email
+          logIn.password = this.password
           axios({
-              method: 'post',
-              url: 'http://localhost:3200/users/update_event',
-              data: {item},
-              config: { 
-              headers: {'Content-Type': 'application/json'}
-              }
-              })
-              .then(res => {
-                console.log('res....', res)
-              })
-          
-        } else {
-          this.events.push(this.editedItem)
-          console.log('this.editedIndex', this.editedItem)
-          let item = this.editedItem
-              axios({
-              method: 'post',
-              url: 'http://localhost:3200/users/create_event',
-              data: {item},
-              config: { 
-              headers: {'Content-Type': 'application/json'}
-              }
-              })
-              .then(res => {
-                console.log('res....', res)
-              })
-
+          method: 'post',
+          url: 'http://localhost:3200/users/logIn',
+          data: {logIn},
+          config: { 
+          headers: {'Content-Type': 'application/json'}
+          }
+          })
+          .then(function (response) {
+            var decoded = jwt_decode(response.data.token);
+            console.log('decode....',decoded);
+            var details = decoded.user;
+            var userEmail = decoded.user.email;
+            console.log('user mail...', userEmail);
+            console.log('user details...',details);
+            localStorage.setItem('jwt', response.data.token);
+            localStorage.getItem('jwt');
+            console.log('user res here...',response.data.token);
+            if(decoded.data == true && decoded.role == 'admin'){
+                console.log('admin page');
+                router.replace('/admin-dash');
+            }
+            else if(decoded.data == true && decoded.role == 'user'){
+                console.log('user page');  
+                router.replace('/user-dash');
+            }else if(this.email != data.email){
+              alert('user not found');
+              console.log('user not found');
+            }
+            })
+            .catch(function (err) {
+                alert('email or password not correct !!!');
+                console.log('err here',err);
+            });
         }
-        this.close()
+
+      },
+      onReset(evt) {
+        evt.preventDefault()
+        this.email = ''
+        this.password = ''
+        this.show = false
+        this.$nextTick(() => {
+          this.show = true
+        })
       }
     }
   }
 </script>
-
 <style>
-.dialog{
-  display: block;
-  height: 600px;
+.container{
+  width:700px;
 }
 </style>
