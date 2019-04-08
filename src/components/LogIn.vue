@@ -1,5 +1,11 @@
 <template>
 <div class="container">
+
+          <b-alert v-model="showDismissibleAlert" variant="danger" dismissible>
+            Email or password not correct !!!
+          </b-alert>
+
+  <b-card>
   <form id="logInForm">
 
     <div class="row">
@@ -38,13 +44,12 @@
 
   </form>
 
-
                       <div>
                         <router-link style="margin: 10px" to="/forgot-password">Forgot password</router-link>
-                        New user <router-link style="margin: 3px" to="/admin">Register here</router-link>
+                        New user ? <router-link style="margin: 3px" to="/admin">Register here</router-link>
                       </div>
 
-         
+  </b-card>      
 </div>
 </template>
 
@@ -59,12 +64,10 @@ export default {
 
 data () {
         return {
-            errors: [],
-            fields: [],
             submitted: false,
             email: '',
             password: '',
-            valid : false
+            showDismissibleAlert: false
         }
     },
 
@@ -86,9 +89,8 @@ methods:{
 
     LogInForm(){
         console.log('in log in function....');
-        // this.checkForm();
-        // this.checkField();
         this.submitted = true
+        // this.showDismissibleAlert = true
         if(this.email && this.password){
         let logIn = new FormData()
         logIn.email = this.email

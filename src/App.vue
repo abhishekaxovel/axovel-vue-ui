@@ -1,23 +1,19 @@
 <template>
   <div id="app">
-    <!-- <div class="home-btn">
-      <Toolbar/>
-    </div> -->
     <router-view/>
-    <!-- <Footer/> -->
   </div>
 </template>
 
 <script>
-import Toolbar from './components/Toolbar'
-import Footer from './components/Footer'
 
 export default {
+  
   name: 'App',
+
   components: {
-    Toolbar,
-    Footer
-  },
+   
+    },
+
 mounted() {
         process.env.ROOT_API
 },

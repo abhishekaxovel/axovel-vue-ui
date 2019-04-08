@@ -1,12 +1,13 @@
 <template>
 <div class="container">
+  <b-card>
   <form id="forgotPassword">
     <div class="row">
       <div class="col-25">
         <label for="email">Email</label>
       </div>
       <div class="col-75">
-        <input type="email" v-model="email" name="email" placeholder="enter your email here" autofocus>
+        <input class="form-control" type="email" v-model="email" name="email" placeholder="enter your email here" autofocus>
         <div v-for="error in errors" :key="error">{{error}}</div>
       </div>
     </div>
@@ -14,6 +15,7 @@
       <button type="button" class="btn btn-primary" @click="forgotPassword">submit</button>
     </div>
   </form>
+  </b-card>
 </div>
 </template>
 
@@ -111,6 +113,7 @@ input[type=submit] {
 
 .container {
   border-radius: 5px;
+  widows: 700px;
   /* background-color: #f2f2f2; */
   padding: 20px;
 }
@@ -123,7 +126,7 @@ input[type=submit] {
 
 .col-75 {
   float: left;
-  width: 75%;
+  width: 60%;
   margin-top: 6px;
 }
 

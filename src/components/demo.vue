@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+  <b-card>  
+  <b-form @submit="onSubmit" @reset="onReset" v-if="show">
       <b-form-group
         id="input-group-1"
         label="Email address:"
@@ -28,6 +29,7 @@
       <b-button type="submit" variant="primary">Submit</b-button>
       <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
+  </b-card>
   </div>
 </template>
 <script>

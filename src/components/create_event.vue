@@ -173,9 +173,6 @@ methods: {
         for( var i = 0; i < this.files.length; i++ ){
           let file = this.files[i];
           formData.append('files[' + i + ']', file);
-          // formData.append('file',file);
-          // formData.get('file');
-          // console.log('image uploaded...', file);
         }
         console.log('formdata', formData);
         for (var key of formData.entries()) {
@@ -320,7 +317,7 @@ input[type=submit] {
 
 .container {
   border-radius: 5px;
-  background-color:linen;
+  /* background-color:linen; */
   padding: 20px;
 }
 

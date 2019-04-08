@@ -3,25 +3,23 @@
 <div class="admin">
 
   <div> <h1> Register here </h1> </div>
-
-
           <!-- <p v-if="errors.length">
             <b>Please correct the following error(s):</b>
             <ul>
               <li v-for="error in errors" :key="error">{{ error }}</li>
             </ul>
           </p> -->
-              <hr>
+          <hr>
   <div>
 
-<div class="container">
+<b-card class="container">
   <form id="newUserform" @submit.prevent="checkForm">
     <div class="row">
       <div class="col-25">
         <label for="fname">First Name</label>
       </div>
       <div class="col-75">
-        <input type="text" v-model="fname" name="firstname" placeholder="Your first name.." autofocus>
+        <input class="form-control" type="text" v-model="fname" name="firstname" placeholder="Your first name.." autofocus>
          <div v-for="fields in fields" :key="fields" style="color: red">{{fields}}</div>
       </div>
     </div>
@@ -30,7 +28,7 @@
         <label for="lname">Last Name</label>
       </div>
       <div class="col-75">
-        <input type="text" v-model="lname" name="lastname" placeholder="Your last name..">
+        <input class="form-control" type="text" v-model="lname" name="lastname" placeholder="Your last name..">
       </div>
     </div>
     <!-- <div class="row">
@@ -51,7 +49,7 @@
           <div v-show="submitted && !email" class="invalid-feedback">Email is required</div>
       </div> -->
       <div class="col-75">
-        <input type="text" v-model="email" name="email" placeholder="Your email address.." autofocus>
+        <input class="form-control" type="text" v-model="email" name="email" placeholder="Your email address.." autofocus>
           <div v-for="error in errors" :key="error" autofocus style="color: red">{{error}}</div>
       </div>
     </div>
@@ -60,7 +58,7 @@
         <label for="country">Country</label>
       </div>
       <div class="col-75">
-        <select id="country" name="country">
+        <select class="form-control" id="country" name="country">
           <option value="australia">Australia</option>
           <option value="india">India</option>
           <option value="canada">Canada</option>
@@ -73,7 +71,7 @@
         <label for="subject">Address</label>
       </div>
       <div class="col-75">
-        <textarea id="address" name="address" placeholder="Enter full address here.." style="height:200px"></textarea>
+        <textarea class="form-control" id="address" name="address" placeholder="Enter full address here.." style="height:200px"></textarea>
         <!-- <div v-if="ValidationMessages">
             <div v-for="address in address" :key="address">{{address.message}}</div>
         </div> -->
@@ -83,8 +81,7 @@
       <button type="button" class="btn btn-primary" @click="submitForm">Register</button>
     </div>
   </form>
-</div>
-
+</b-card>
        </div>
     </div>
 </template>
@@ -110,20 +107,7 @@ components: {
       email: '',
       fname: '',
       lname: '',
-      submitted: false,
-
-
-      // ValidationMessages: {
-      //     mobile: [
-      //       { type: 'required', message: 'mobile is required' },
-      //       { type: 'minlength', message: 'must be 10 number long' }
-      //     ],
-      //     address: [
-      //       { type: 'required', message: 'address is required' }
-      //     ]
-      //   }
-
-
+      submitted: false
     }
   },
 created() {
@@ -232,23 +216,21 @@ created() {
 
 
 <style>
-/* Style inputs, select elements and textareas */
-input[type=text], select, textarea{
+
+/* input[type=text], select, textarea{
   width: 70%;
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
   resize: vertical;
-}
+} */
 
-/* Style the label to display next to the inputs */
 label {
   padding: 12px 12px 12px 0;
   display: inline-block;
 }
 
-/* Style the submit button */
 input[type=submit] {
   background-color: #4CAF50;
   color: white;
@@ -259,35 +241,30 @@ input[type=submit] {
   float: right;
 }
 
-/* Style the container */
 .container {
   border-radius: 5px;
   /* background-color: #f2f2f2; */
   padding: 20px;
 }
 
-/* Floating column for labels: 25% width */
 .col-25 {
   float: left;
   width: 25%;
   margin-top: 6px;
 }
 
-/* Floating column for inputs: 75% width */
 .col-75 {
   float: left;
-  width: 75%;
+  width: 60%;
   margin-top: 6px;
 }
 
-/* Clear floats after the columns */
 .row:after {
   content: "";
   display: table;
   clear: both;
 }
 
-/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
 @media screen and (max-width: 600px) {
   .col-25, .col-75, input[type=submit] {
     width: 100%;

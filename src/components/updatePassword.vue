@@ -1,12 +1,17 @@
 <template>
 <div>
-    <form id="forgotPassword" class="container">
+          <b-alert class="container" v-model="showDismissibleAlert" variant="danger" dismissible>
+            All fields are required
+          </b-alert>
+
+  <b-card class="container">
+    <form id="forgotPassword">
     <div class="row">
       <div class="col-25">
         <label for="email">Unique Id</label>
       </div>
       <div class="col-75">
-        <input type="text" v-model="uId" placeholder="enter unique id here" required>
+        <input class="form-control" type="text" v-model="uId" placeholder="enter unique id here" required>
       </div>
     </div>
     <div class="row">
@@ -14,7 +19,7 @@
         <label for="email">New password</label>
       </div>
       <div class="col-75">
-        <input type="password" v-model="password" placeholder="enter new password here" required>
+        <input class="form-control" type="password" v-model="password" placeholder="enter new password here" required>
       </div>
     </div>
     <div class="row">
@@ -22,7 +27,7 @@
         <label for="email">Confirm password</label>
       </div>
       <div class="col-75">
-        <input type="password" v-model="confirmpassword" placeholder="confirm password here" @keyup="checkPassword">
+        <input class="form-control" type="password" v-model="confirmpassword" placeholder="confirm password here" @keyup="checkPassword">
         <div v-if="err">{{error}}</div>
       </div>
     </div>
@@ -35,6 +40,7 @@
       <button type="button" class="btn btn-primary" @click="updatePassword">Update password</button>
     </div>
     </form>
+    </b-card>
 </div>
 </template>
 
@@ -48,7 +54,8 @@ export default {
             password: '',
             confirmpassword: '',
             error: 'password not matched',
-            err: false
+            err: false,
+            showDismissibleAlert: false
         }
     },
     methods: {
@@ -84,7 +91,7 @@ export default {
                   console.log('err here',err);
               });
         }  else{
-          alert("all fields are required");
+          this.showDismissibleAlert = true
         } 
     }
     }
@@ -93,14 +100,14 @@ export default {
 </script>
 
 <style>
-input[type=text], select, textarea, input{
+/* input[type=text], select, textarea, input{
   width: 70%;
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
   resize: vertical;
-}
+} */
 
 label {
   padding: 12px 12px 12px 0;
@@ -132,7 +139,7 @@ input[type=submit] {
 
 .col-75 {
   float: left;
-  width: 75%;
+  width: 60%;
   margin-top: 6px;
 }
 

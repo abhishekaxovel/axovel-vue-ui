@@ -4,18 +4,15 @@ import Home from '@/components/home'
 import Admin from '@/components/Admin'
 import User from '@/components/User'
 import LogIn from '@/components/LogIn'
-import UserLogIn from '@/components/UserLogIn'
 import userdashboard from '@/components/user-dashboard'
 import admindashboard from '@/components/admin-dashboard'
 import event_list from '@/components/event-list'
 import forgotPassword from '@/components/forgotPassword'
 import updatePassword from '@/components/updatePassword'
 import demo from '@/components/demo'
-import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css'
+import event from '@/components/event-preview'
 
 Vue.use(Router)
-Vue.use(Vuetify)
 
 export default new Router({
   routes: [
@@ -67,11 +64,6 @@ export default new Router({
         }
     },
     {
-      path: '/login-page',
-      name: 'UserLogIn',
-      component: UserLogIn
-    },
-    {
       path: '/forgot-password',
       name: 'forgotpassword',
       component: forgotPassword
@@ -80,6 +72,11 @@ export default new Router({
       path: '/update-password',
       name: 'updatepassword',
       component: updatePassword
+    },
+    {
+      path: '/event',
+      name: 'event',
+      component: event
     }
   ]
 })
