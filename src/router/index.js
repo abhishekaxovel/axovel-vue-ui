@@ -11,6 +11,9 @@ import forgotPassword from '@/components/forgotPassword'
 import updatePassword from '@/components/updatePassword'
 import demo from '@/components/demo'
 import event from '@/components/event-preview'
+import eventLocation from '@/components/eventLocation'
+import eventRegistration from '@/components/eventRegistration'
+import eventPayment from '@/components/eventPayment'
 
 Vue.use(Router)
 
@@ -77,6 +80,21 @@ export default new Router({
       path: '/event',
       name: 'event',
       component: event
+    },
+    {
+      path: '/eventLocation',
+      name: 'eventLocation',
+      component: eventLocation
+    },
+    {
+      path: '/eventRegistration',
+      name: 'eventRegistration',
+      component: eventRegistration
+    },
+    {
+      path: '/eventPayment',
+      name: 'eventPayment',
+      component: eventPayment
     }
   ]
 })

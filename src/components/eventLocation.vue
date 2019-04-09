@@ -2,20 +2,20 @@
     <div>
         <b-breadcrumb :items="items"></b-breadcrumb>
         <div class="col-md-8">
-        <b-card align="center" title="Website Preview" class="scroll">
+            <b-card align="center" title="Website Preview" class="scroll">
 
             <b-card class="row">
                 <div class="col-md-12" style="background-color: gray; height: 300px">
 
-                <div class="col-md-12" align="center"><h1>{{EventInformation.name}}</h1></div>
+                <!-- <div class="col-md-12" align="center"><h1>{{name}}</h1></div> -->
 
-                <div class="col-md-12">
-                        <div class="col-md-4"><h4>{{EventInformation.startDate}} - {{EventInformation.endDate}}</h4></div>
+                <!-- <div class="col-md-12">
+                        <div class="col-md-4"><h4>{{startDate}} - {{endDate}}</h4></div>
                         <div class="col-md-8">
                             
                         </div>
 
-                </div>
+                </div> -->
 
                 </div>
             </b-card>
@@ -30,7 +30,7 @@
                 <div class="col-md-12">
                     <div class="col-md-4">
                     <h3>Register By</h3>
-                    <p>{{EventInformation.deadLine}}</p>
+                    <!-- <p>{{deadLine}}</p> -->
                     </div>
                     <div class="col-md-4">
                     <b-button>Register Now</b-button>
@@ -70,83 +70,71 @@
         </b-card>
         </div>
 
-
-
         <div class="col-md-4">
         <b-card class="scroll"> 
-        <h3 align="start">Event Information</h3><hr>
+        <h3 align="start">Location</h3><hr>
         <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-            <b-form-group id="input-group-1" label="What's the name of your event?" label-for="input-1" align="start">
+            <b-form-group id="input-group-1" label="Venue Name" label-for="input-1" align="start">
                 <b-form-input
                 id="input-1"
-                v-model="EventInformation.name"
+                v-model="Location.venue"
                 required
-                placeholder="Name of your event"
+                placeholder="Name of your venue"
                 ></b-form-input>
             </b-form-group>
-            <b-form-group id="input-group-2" label="How would you describe your event?" label-for="input-2" align="start">
-                <b-form-textarea
-                id="textarea"
-                v-model="EventInformation.description"
+            <b-form-group id="input-group-2" label="Address 1" label-for="input-2" align="start">
+                <b-form-input
+                id="input-2"
+                v-model="Location.address1"
+                placeholder="Address Line 1"
                 required
-                placeholder="Description of your event"
-                rows="3"
-                max-rows="6"
-                ></b-form-textarea>
+                ></b-form-input>
             </b-form-group>
-            <b-form-group id="input-group-3" label="What locale will you be using?" label-for="input-3" align="start">
-                <b-form-select v-model="EventInformation.selected" :options="EventInformation.options" class="mb-3">
+            <b-form-group id="input-group-3" label="Address 2" label-for="input-3" align="start">
+                <b-form-input
+                id="input-3"
+                v-model="Location.address2"
+                placeholder="Address Line 2"
+                required
+                ></b-form-input>
+            </b-form-group>
+            <b-form-group id="input-group-4" label="Address 3" label-for="input-4" align="start">
+                <b-form-input
+                id="input-4"
+                v-model="Location.address3"
+                placeholder="Address Line 3"
+                required
+                ></b-form-input>
+            </b-form-group>
+            <b-form-group id="input-group-5" label="City" label-for="input-5" align="start">
+                <b-form-input
+                id="input-5"
+                v-model="Location.city"
+                placeholder="Event City"
+                required
+                ></b-form-input>
+            </b-form-group>
+            <b-form-group id="input-group-6" label="State" label-for="input-6" align="start">
+                <b-form-input
+                id="input-6"
+                v-model="Location.state"
+                placeholder="Event State"
+                required
+                ></b-form-input>
+            </b-form-group>
+            <b-form-group id="input-group-7" label="Country" label-for="input-7" align="start">
+                <b-form-select v-model="Location.country" :options="Location.options" class="mb-3">
                 <template slot="first">
-                    <option :value="null" disabled>-- Please select an option --</option>
+                    <option :value="null" disabled>-- Please select country --</option>
                 </template>
                 <option value="C">Option C</option> <option value="D">Option D</option>
                 </b-form-select>
             </b-form-group>
-            <!-- <b-form-group id="input-group-4" label="Who can register for this event?" label-for="input-4">
-                <b-form-radio v-model="selected" name="some-radios" value="A">Open to the public</b-form-radio>
-                <b-form-radio v-model="selected" name="some-radios" value="B">Only those who get invitations</b-form-radio>
-            </b-form-group> -->
-            <b-form-group id="input-group-4" label="How many people can attend your event?" label-for="input-4" align="start">
-                <b-form-input
-                id="input-4"
-                type="number"
-                v-model="EventInformation.people"
-                min = 1
-                required
-                ></b-form-input>
-            </b-form-group>
-            <b-form-group id="input-group-5" label="What's your registration goal?" label-for="input-5" align="start">
-                <b-form-input
-                id="input-5"
-                type="number"
-                v-model="EventInformation.goal"
-                min = 1
-                required
-                ></b-form-input>
-            </b-form-group>
-            <b-form-group id="input-group-6" label="When will your event start?" label-for="input-6" align="start">
-                <b-form-input
-                id="input-6"
-                type="date"
-                v-model="EventInformation.startDate"
-                required
-                ></b-form-input>
-            </b-form-group>
-            <b-form-group id="input-group-7" label="When will your event end?" label-for="input-7" align="start">
-                <b-form-input
-                id="input-7"
-                type="date"
-                v-model="EventInformation.endDate"
-                @keyup="checkDate"
-                required
-                ></b-form-input>
-            </b-form-group>
-            <b-form-group id="input-group-8" label="When is your registration deadline?" label-for="input-8" align="start">
+            <b-form-group id="input-group-8" label="Phone" label-for="input-8" align="start">
                 <b-form-input
                 id="input-8"
-                type="date"
-                v-model="EventInformation.deadLine"
-                @keyup="checkDeadLine"
+                v-model="Location.phone"
+                placeholder="Event Phone"
                 required
                 ></b-form-input>
             </b-form-group>
@@ -162,76 +150,87 @@
 import axios from 'axios'
 import { mdbStepper, mdbStep, mdbFooter, mdbContainer, mdbRow, mdbCol } from 'mdbvue'
 import router from '../router/index.js'
-// import eventLocation from './eventLocation'
 
 export default {
 data(){
     return{
-         baseUrl:  'http://localhost:3200/event',
+    baseUrl:  'http://localhost:3200/event',
+    show: true, 
+    items: [
+            {
+                text: 'Event Information',
+                to: '/event'
+            },
+            {
+                text: 'Location',
+                to: '/eventLocation',
+                active: true
+            },
+            {
+                text: 'Registration',
+                to: '/eventRegistration'
+                // active: true
+            },
+            {
+                text: 'Payments',
+                to: '/eventPayment'
+            }
+            ],
 
-         items: [
-          {
-            text: 'Event Information',
-            to: '/event',
-            active: true
-          },
-          {
-            text: 'Location',
-            to: '/eventLocation'
-          },
-          {
-            text: 'Registration',
-            to: '/eventRegistration'
-          },
-          {
-              text: 'Payments',
-              to: '/eventPayment'
-          }
-        ],
-         show: true,
-
-EventInformation: {
-        name:'',
-        description: '',
-        startDate: '',
-        endDate: '',
-        deadLine: '',
-        goal: '',
-        people: '',
-        selected: null,
+Location: {
+        venue: '',
+        address1: '',
+        address2: '',
+        address3: '',
+        city: '',
+        zip: '',
+        state: '',
+        country: '',
+        phone: '',
+        country: null,
         options: [
           { value: 'A', text: 'Option A (from options prop)' },
           { value: 'B', text: 'Option B (from options prop)' }
-        ]}
-    }
-    },
+        ]
+     }
 
+    }
+},
+created(){
+axios.get(this.baseUrl + '/eventInformation')
+    .then(res => {
+     console.log('res here...', res.data);
+    })
+    .catch(e => {
+      console.log('err here...',e);
+    })
+},
 components: {
     mdbFooter,
     mdbContainer,
     mdbRow,
-    mdbCol,
+    mdbCol
 },
 
 methods: {
 onSubmit(evt) {
-          evt.preventDefault();
-          let eventId = 'cvent';
+        evt.preventDefault()
           let event = new FormData();
+          let eventId = 'cvent';
           event.eventId = eventId;
-          event.EventInformation = this.EventInformation;
+          event.Location = this.Location;
           console.log('event', event);
           axios({
           method: 'post',
           url: this.baseUrl + '/event',
-          data: {event: event},
+          data:  {event: event},
           config: { 
             headers: {'Content-Type': 'multipart/form-data'}
             }
           })
           .then(function (response) {
               console.log('res here',response);
-               router.replace('/eventLocation');
+              router.replace('/eventRegistration')
           })
           .catch(function (response) {
               console.log('err here',response);
@@ -239,33 +238,19 @@ onSubmit(evt) {
       },
    onReset(evt) {
         evt.preventDefault()
-        this.EventInformation.name = ''
-        this.EventInformation.description = ''
-        this.EventInformation.people = ''
-        this.EventInformation.goal = ''
-        this.EventInformation.selected = ''
-        this.EventInformation.startDate = ''
-        this.EventInformation.endDate = ''
-        this.EventInformation.deadLine = ''
+        this.Location.venue = ''
+        this.Location.address1 = ''
+        this.Location.address2 = ''
+        this.Location.address3 = ''
+        this.Location.city = ''
+        this.Location.state = ''
+        this.Location.country = ''
+        this.Location.phone = ''
         this.show = false
         this.$nextTick(() => {
           this.show = true
         })
-      },
-
-      checkDate(){
-         let check = this.startDate < this.endDate
-          console.log('check date', check)
-      },
-
-      checkDeadLine(){
-          if(this.startDate < this.endDate){
-                console.log('valid-date');
-          }else{
-               console.log('not valid-date');
-          }
       }
-
 }
 }
 </script>
