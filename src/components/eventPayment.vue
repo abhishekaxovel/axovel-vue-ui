@@ -5,17 +5,21 @@
             <b-card align="center" title="Website Preview" class="scroll">
 
             <b-card class="row">
-                <div class="col-md-12" style="background-color: gray; height: 300px">
+                <div class="col-md-12" style="background-color: antiquewhite; height: 300px">
 
-                <!-- <div class="col-md-12" align="center"><h1>{{name}}</h1></div>
+                <div class="col-md-12" align="center">
+                    <h1 style="padding: 20px">
+                        {{EventInformation.name}}</h1><hr></div>
 
                 <div class="col-md-12">
-                        <div class="col-md-4"><h4>{{startDate}} - {{endDate}}</h4></div>
-                        <div class="col-md-8">
-                            
+                        <div class="col-md-6"><h4 style="text-align: initial;">
+                       Start Date : {{EventInformation.startDate | formatDate}} <br>
+                       End Date : {{EventInformation.endDate | formatDate}}
+                        </h4></div>
+                        <div class="col-md-6">
+                            <h4>Axovel Software Dwarka Delhi 110075</h4>
                         </div>
-
-                </div> -->
+                </div>
 
                 </div>
             </b-card>
@@ -27,10 +31,21 @@
             </b-card> -->
 
             <b-card class="row">
-                <div class="col-md-12">
-                   <h3 align="center">Order summary</h3><hr>
-                   
-                </div>
+                    <div class="col-md-12">
+                    <h3 align="center">Order summary</h3><hr>
+                    <div class="col-md-12">
+                    <div class="col-md-6">
+                    <h3> Event Details </h3>
+                    </div>
+                    <div class="col-md-6">
+                    <h4> Total Amount: 500 </h4>
+                    </div>
+                    <br><hr>
+                    <div class="col-md-12">
+                    <h3>Payments details</h3>
+                    </div>
+                    </div>
+                    </div>
             </b-card>
 
             <b-card class="row">
@@ -81,7 +96,7 @@
                 <option value="C">Option C</option> <option value="D">Option D</option>
                 </b-form-select>
             </b-form-group> -->
-            <!-- <b-button type="submit" variant="primary">Finish</b-button> -->
+            <b-button type="submit" variant="primary">Finish</b-button>
             <!-- <b-button type="reset" variant="danger">Reset</b-button> -->
         </b-form>
         </b-card>
@@ -90,35 +105,71 @@
 </template>
 
 <script>
+import axios from 'axios'
 import { mdbStepper, mdbStep, mdbFooter, mdbContainer, mdbRow, mdbCol } from 'mdbvue'
 import router from '../router/index.js'
-import { fail } from 'assert';
+import moment from 'moment'
 
 export default {
 data(){
     return{
+        baseUrl:  'http://localhost:3200/event',
         show: true,
-items: [
-          {
-            text: 'Event Information',
-            to: '/event'
-          },
-          {
-            text: 'Location',
-            to: '/eventLocation'
-          },
-          {
-            text: 'Registration',
-            to: '/eventRegistration'
-          },
-          {
-              text: 'Payments',
-              to: '/eventPayment',
-              active: true
-          }
+        items: [
+                {
+                    text: 'Event Information',
+                    to: '/event'
+                },
+                {
+                    text: 'Location',
+                    to: '/eventLocation'
+                },
+                {
+                    text: 'Registration',
+                    to: '/eventRegistration'
+                },
+                {
+                    text: 'Payments',
+                    to: '/eventPayment',
+                    active: true
+                }
         ],
+        EventInformation: {
+        name:'',
+        description: '',
+        startDate: '',
+        endDate: '',
+        deadLine: '',
+        goal: '',
+        people: '',
+        selected: null,
+        options: [
+          { value: 'A', text: 'Option A (from options prop)' },
+          { value: 'B', text: 'Option B (from options prop)' }
+        ]}
     }
 },
+created(){
+
+axios.get(this.baseUrl + '/eventInformation')
+    .then(res => {
+    console.log('res here...', res.data.EventInformation);
+    this.EventInformation = res.data.EventInformation;
+    })
+    .catch(err => {
+      console.log('err here...',err);
+    })
+
+},
+
+filters: {
+    formatDate(value){
+    if (value) {
+        return moment(String(value)).format('DD/MM/YYYY')
+    }
+    }
+},
+
 components: {
     mdbFooter,
     mdbContainer,
@@ -126,12 +177,36 @@ components: {
     mdbCol
 },
 methods: {
-    onSubmit(){
-
-    },
-    onReset(){
-
-    }
+    onSubmit(evt) {
+        evt.preventDefault()
+          let event = new FormData();
+          let eventId = 'cvent';
+          event.eventId = eventId;
+        //   event.Location = this.Location;
+          console.log('event', event);
+          axios({
+          method: 'post',
+          url: this.baseUrl + '/event',
+          data:  {event: event},
+          config: { 
+            headers: {'Content-Type': 'multipart/form-data'}
+            }
+          })
+          .then(function (response) {
+              console.log('res here',response);
+              router.replace('/event')
+          })
+          .catch(function (response) {
+              console.log('err here',response);
+          });
+      },
+   onReset(evt) {
+        evt.preventDefault()
+        this.show = false
+        this.$nextTick(() => {
+          this.show = true
+        })
+      }
 }
 }
 </script>

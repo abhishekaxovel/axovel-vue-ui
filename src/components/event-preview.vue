@@ -5,16 +5,20 @@
         <b-card align="center" title="Website Preview" class="scroll">
 
             <b-card class="row">
-                <div class="col-md-12" style="background-color: gray; height: 300px">
+                <div class="col-md-12" style="background-color: antiquewhite; height: 300px">
 
-                <div class="col-md-12" align="center"><h1>{{EventInformation.name}}</h1></div>
+                <div class="col-md-12" align="center">
+                    <h1 style="padding: 20px">
+                        {{EventInformation.name}}</h1><hr></div>
 
                 <div class="col-md-12">
-                        <div class="col-md-4"><h4>{{EventInformation.startDate}} - {{EventInformation.endDate}}</h4></div>
-                        <div class="col-md-8">
-                            
+                        <div class="col-md-6"><h4 style="text-align: initial;">
+                       Start Date : {{EventInformation.startDate | formatDate}} <br>
+                       End Date : {{EventInformation.endDate | formatDate}}
+                        </h4></div>
+                        <div class="col-md-6">
+                            <h4>Axovel Software Dwarka Delhi 110075</h4>
                         </div>
-
                 </div>
 
                 </div>
@@ -30,7 +34,7 @@
                 <div class="col-md-12">
                     <div class="col-md-4">
                     <h3>Register By</h3>
-                    <p>{{EventInformation.deadLine}}</p>
+                    <p>{{EventInformation.deadLine| formatDate}}</p>
                     </div>
                     <div class="col-md-4">
                     <b-button>Register Now</b-button>
@@ -162,6 +166,7 @@
 import axios from 'axios'
 import { mdbStepper, mdbStep, mdbFooter, mdbContainer, mdbRow, mdbCol } from 'mdbvue'
 import router from '../router/index.js'
+import moment from 'moment'
 // import eventLocation from './eventLocation'
 
 export default {
@@ -205,6 +210,27 @@ EventInformation: {
         ]}
     }
     },
+
+created(){
+
+axios.get(this.baseUrl + '/eventInformation')
+    .then(res => {
+    console.log('res here...', res.data.EventInformation);
+    this.EventInformation = res.data.EventInformation;
+    })
+    .catch(err => {
+      console.log('err here...',err);
+    })
+
+},
+
+filters: {
+    formatDate(value){
+    if (value) {
+        return moment(String(value)).format('DD/MM/YYYY')
+    }
+    }
+},
 
 components: {
     mdbFooter,
