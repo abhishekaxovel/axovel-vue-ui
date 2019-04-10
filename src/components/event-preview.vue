@@ -99,17 +99,16 @@
                 ></b-form-textarea>
             </b-form-group>
             <b-form-group id="input-group-3" label="What locale will you be using?" label-for="input-3" align="start">
-                <b-form-select v-model="EventInformation.selected" :options="EventInformation.options" class="mb-3">
+                <b-form-select v-model="EventInformation.selected" :options="options" class="mb-3">
                 <template slot="first">
                     <option :value="null" disabled>-- Please select an option --</option>
                 </template>
-                <option value="C">Option C</option> <option value="D">Option D</option>
                 </b-form-select>
             </b-form-group>
-            <!-- <b-form-group id="input-group-4" label="Who can register for this event?" label-for="input-4">
-                <b-form-radio v-model="selected" name="some-radios" value="A">Open to the public</b-form-radio>
-                <b-form-radio v-model="selected" name="some-radios" value="B">Only those who get invitations</b-form-radio>
-            </b-form-group> -->
+            <b-form-group id="input-group-4" label="Who can register for this event?" label-for="input-4" align="start">
+                <b-form-radio v-model="selected" name="some-radios" value="A" align="start">Open to the public</b-form-radio>
+                <b-form-radio v-model="selected" name="some-radios" value="B" align="start">Only those who get invitations</b-form-radio>
+            </b-form-group>
             <b-form-group id="input-group-4" label="How many people can attend your event?" label-for="input-4" align="start">
                 <b-form-input
                 id="input-4"
@@ -194,6 +193,10 @@ data(){
           }
         ],
          show: true,
+         options: [
+          { value: 'A', text: 'Option A' },
+          { value: 'B', text: 'Option B' }
+        ],
 
 EventInformation: {
         name:'',
@@ -204,10 +207,7 @@ EventInformation: {
         goal: '',
         people: '',
         selected: null,
-        options: [
-          { value: 'A', text: 'Option A (from options prop)' },
-          { value: 'B', text: 'Option B (from options prop)' }
-        ]}
+        }
     }
     },
 

@@ -26,6 +26,13 @@
             <b-card class="row">
                 <div class="col-md-12">
                     <h3 align="center">Countdown to the Event</h3><hr>
+                     <!-- <mdb-google-map
+                        name="reg"
+                        class="col-md-12"
+                        :markerCoordinates="coordinates"
+                        style=" height: 200px"
+                        :zoom="14">
+                    </mdb-google-map> -->
                 </div>
             </b-card>
 
@@ -150,15 +157,22 @@
 </template>
 
 <script>
-import axios from 'axios'
-import { mdbStepper, mdbStep, mdbFooter, mdbContainer, mdbRow, mdbCol } from 'mdbvue'
-import router from '../router/index.js'
-import moment from 'moment'
+import axios from 'axios';
+import { mdbStepper, mdbStep, mdbFooter, mdbContainer, mdbRow, mdbCol } from 'mdbvue';
+import router from '../router/index.js';
+import moment from 'moment';
+ import { mdbGoogleMap } from 'mdbvue';
 
 export default {
+
 data(){
     return{
     baseUrl:  'http://localhost:3200/event',
+    coordinates: [{
+          latitude: 40.725118,
+          longitude: -73.997699,
+          title: 'New York'
+        }],
     show: true, 
     items: [
             {
@@ -212,6 +226,9 @@ Location: {
         ]}
 
     }
+},
+components: {
+    mdbGoogleMap
 },
 created(){
 

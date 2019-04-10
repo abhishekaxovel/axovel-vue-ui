@@ -14,6 +14,7 @@ import event from '@/components/event-preview'
 import eventLocation from '@/components/eventLocation'
 import eventRegistration from '@/components/eventRegistration'
 import eventPayment from '@/components/eventPayment'
+import list from '@/components/list'
 
 Vue.use(Router)
 
@@ -95,6 +96,11 @@ export default new Router({
       path: '/eventPayment',
       name: 'eventPayment',
       component: eventPayment
+    },
+    {
+      path: '/list',
+      name: 'list',
+      component: list
     }
   ]
 })

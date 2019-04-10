@@ -38,11 +38,12 @@
                     <h3> Event Details </h3>
                     </div>
                     <div class="col-md-6">
-                    <h4> Total Amount: 500 </h4>
+                    <h4><strong> Total Amount : </strong>{{Payments.amount}}</h4>
                     </div>
                     <br><hr>
                     <div class="col-md-12">
                     <h3>Payments details</h3>
+                    <p><strong>Payment Mode : </strong>{{Payments.paymentMethod}}</p>
                     </div>
                     </div>
                     </div>
@@ -80,15 +81,23 @@
             <b-card class="scroll"> 
         <h3 align="start">Payments</h3><hr>
         <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-            <!-- <b-form-group id="input-group-2" label="What's the name of your event?" label-for="input-1" align="start">
+                <b-form-group id="input-group-1" label="What payment methods will you accept? " label-for="input-1" align="start">
+                <b-form-checkbox-group
+                    v-model="Payments.paymentMethod"
+                    :options="options"
+                    name="flavour-2a"
+                    align="start"
+                    stacked
+                ></b-form-checkbox-group>
+                </b-form-group>
+            <b-form-group id="input-group-2" label="Total Amount?" label-for="input-2" align="start">
                 <b-form-input
                 id="input-1"
-                v-model="name"
+                v-model="Payments.amount"
                 required
-                placeholder="Name of your event"
                 ></b-form-input>
             </b-form-group>
-            <b-form-group id="input-group-3" label="What locale will you be using?" label-for="input-3" align="start">
+            <!-- <b-form-group id="input-group-3" label="What locale will you be using?" label-for="input-3" align="start">
                 <b-form-select v-model="selected" :options="options" class="mb-3">
                 <template slot="first">
                     <option :value="null" disabled>-- Please select an option --</option>
@@ -97,7 +106,7 @@
                 </b-form-select>
             </b-form-group> -->
             <b-button type="submit" variant="primary">Finish</b-button>
-            <!-- <b-button type="reset" variant="danger">Reset</b-button> -->
+            <b-button type="reset" variant="danger">Reset</b-button>
         </b-form>
         </b-card>
         </div>
@@ -115,6 +124,17 @@ data(){
     return{
         baseUrl:  'http://localhost:3200/event',
         show: true,
+
+        Payments: {
+            paymentMethod: null, // Must be an array reference!
+            amount: ''
+        },
+        options: [
+                    { text: 'Credit card', value: 'Credit card' },
+                    { text: 'Debit card', value: 'Debit card' },
+                    { text: 'Net banking', value: 'Net banking' },
+                    { text: 'Other', value: 'Other' }
+                    ],
         items: [
                 {
                     text: 'Event Information',
@@ -155,6 +175,7 @@ axios.get(this.baseUrl + '/eventInformation')
     .then(res => {
     console.log('res here...', res.data.EventInformation);
     this.EventInformation = res.data.EventInformation;
+    this.Payments = res.data.Payments;
     })
     .catch(err => {
       console.log('err here...',err);
@@ -182,7 +203,7 @@ methods: {
           let event = new FormData();
           let eventId = 'cvent';
           event.eventId = eventId;
-        //   event.Location = this.Location;
+          event.Payments = this.Payments;
           console.log('event', event);
           axios({
           method: 'post',
@@ -202,7 +223,9 @@ methods: {
       },
    onReset(evt) {
         evt.preventDefault()
-        this.show = false
+        this.Payments.paymentMethod = '';
+        this.Payments.amount = '';
+        this.show = false;
         this.$nextTick(() => {
           this.show = true
         })

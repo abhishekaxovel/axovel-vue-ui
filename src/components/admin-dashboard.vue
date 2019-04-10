@@ -4,12 +4,19 @@
       <div class="details">
           
       </div>
+      <hr>
 
      <div class="logout">
          <button type="button" class="btn btn-danger" @click="logOut">LogOut</button>
      </div>
 <hr>
 
+      <!-- <div>
+        <b-table :items="tableData">  
+        </b-table>
+      </div> -->
+
+<hr>
 <Event />
 
 </div>
@@ -26,7 +33,21 @@ components: {
 
 data(){
     return{
-      
+       baseUrl:  'http://localhost:3200/event',
+       tableData: [],
+          EventInformation: {
+                            name:'',
+                            description: '',
+                            startDate: '',
+                            endDate: '',
+                            deadLine: '',
+                            goal: '',
+                            people: '',
+                            selected: null,
+                            options: [
+                            { value: 'A', text: 'Option A (from options prop)' },
+                            { value: 'B', text: 'Option B (from options prop)' }
+                            ]}
     }
 },
 
@@ -39,7 +60,16 @@ beforeCreate(){
     }
   }, 
 created(){
-   
+   axios.get(this.baseUrl + '/eventInformation')
+    .then(res => {
+    console.log('res here...', res.data.EventInformation);
+    this.EventInformation = res.data.EventInformation;
+    this.tableData = this.EventInformation;
+    console.log('this.tableData', this.tableData);
+    })
+    .catch(err => {
+      console.log('err here...',err);
+    })
   },
 methods: {
     logOut(){
