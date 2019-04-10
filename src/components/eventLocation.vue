@@ -16,7 +16,12 @@
                        End Date : {{EventInformation.endDate | formatDate}}
                         </h4></div>
                         <div class="col-md-6">
-                            <h4>Axovel Software Dwarka Delhi 110075</h4>
+                            <h4>
+                                {{Location.venue}}, {{Location.address1}}
+                                {{Location.address2}} {{Location.address3}},
+                                {{Location.city}}, {{Location.country}} 
+                                {{Location.zip}}
+                            </h4>
                         </div>
                 </div>
 
@@ -124,6 +129,15 @@
                 required
                 ></b-form-input>
             </b-form-group>
+            <b-form-group id="input-group-5" label="Zip" label-for="input-5" align="start">
+                <b-form-input
+                id="input-5"
+                v-model="Location.zip"
+                placeholder="Event City Zip"
+                MaxLength = 6
+                required
+                ></b-form-input>
+            </b-form-group>
             <b-form-group id="input-group-6" label="State" label-for="input-6" align="start">
                 <b-form-input
                 id="input-6"
@@ -133,17 +147,18 @@
                 ></b-form-input>
             </b-form-group>
             <b-form-group id="input-group-7" label="Country" label-for="input-7" align="start">
-                <b-form-select v-model="Location.country" :options="Location.options" class="mb-3">
+                <b-form-select v-model="Location.country" :options="options" class="mb-3">
                 <template slot="first">
                     <option :value="null" disabled>-- Please select country --</option>
                 </template>
-                <option value="C">Option C</option> <option value="D">Option D</option>
+                <!-- <option value="C">Option C</option> <option value="D">Option D</option> -->
                 </b-form-select>
             </b-form-group>
             <b-form-group id="input-group-8" label="Phone" label-for="input-8" align="start">
                 <b-form-input
                 id="input-8"
                 v-model="Location.phone"
+                MaxLength = 10
                 placeholder="Event Phone"
                 required
                 ></b-form-input>
@@ -195,6 +210,11 @@ data(){
             }
             ],
 
+    options: [
+          { value: 'India', text: 'India' },
+          { value: 'Usa', text: 'Usa' }
+        ],
+
 Location: {
         venue: '',
         address1: '',
@@ -206,10 +226,6 @@ Location: {
         country: '',
         phone: '',
         country: null,
-        options: [
-          { value: 'A', text: 'Option A (from options prop)' },
-          { value: 'B', text: 'Option B (from options prop)' }
-        ]
      },
      EventInformation: {
         name:'',
@@ -221,8 +237,8 @@ Location: {
         people: '',
         selected: null,
         options: [
-          { value: 'A', text: 'Option A (from options prop)' },
-          { value: 'B', text: 'Option B (from options prop)' }
+          { value: 'India', text: 'India' },
+          { value: 'Usa', text: 'Usa' }
         ]}
 
     }
@@ -247,7 +263,7 @@ axios.get(this.baseUrl + '/eventInformation')
 filters: {
     formatDate(value){
     if (value) {
-        return moment(String(value)).format('DD/MM/YYYY')
+        return moment(String(value)).format('DD-MMMM-YYYY')
     }
     }
 },
@@ -290,6 +306,7 @@ onSubmit(evt) {
         this.Location.address2 = ''
         this.Location.address3 = ''
         this.Location.city = ''
+        this.Location.zip = ''
         this.Location.state = ''
         this.Location.country = ''
         this.Location.phone = ''

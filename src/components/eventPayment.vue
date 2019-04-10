@@ -17,7 +17,11 @@
                        End Date : {{EventInformation.endDate | formatDate}}
                         </h4></div>
                         <div class="col-md-6">
-                            <h4>Axovel Software Dwarka Delhi 110075</h4>
+                            <h4>
+                                {{Location.venue}}, {{Location.address1}}
+                                {{Location.address2}} {{Location.address3}},
+                                {{Location.city}} {{Location.country}} {{Location.zip}}
+                            </h4>
                         </div>
                 </div>
 
@@ -154,6 +158,22 @@ data(){
                     active: true
                 }
         ],
+        Location: {
+                venue: '',
+                address1: '',
+                address2: '',
+                address3: '',
+                city: '',
+                zip: '',
+                state: '',
+                country: '',
+                phone: '',
+                country: null,
+                options: [
+                { value: 'A', text: 'Option A (from options prop)' },
+                { value: 'B', text: 'Option B (from options prop)' }
+                ]
+            },
         EventInformation: {
         name:'',
         description: '',
@@ -175,6 +195,7 @@ axios.get(this.baseUrl + '/eventInformation')
     .then(res => {
     console.log('res here...', res.data.EventInformation);
     this.EventInformation = res.data.EventInformation;
+    this.Location = res.data.Location;
     this.Payments = res.data.Payments;
     })
     .catch(err => {
@@ -186,7 +207,7 @@ axios.get(this.baseUrl + '/eventInformation')
 filters: {
     formatDate(value){
     if (value) {
-        return moment(String(value)).format('DD/MM/YYYY')
+        return moment(String(value)).format('DD-MMMM-YYYY')
     }
     }
 },

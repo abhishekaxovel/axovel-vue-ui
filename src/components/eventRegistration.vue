@@ -16,7 +16,11 @@
                        End Date : {{EventInformation.endDate | formatDate}}
                         </h4></div>
                         <div class="col-md-6">
-                            <h4>Axovel Software Dwarka Delhi 110075</h4>
+                            <h4>
+                                {{Location.venue}}, {{Location.address1}}
+                                {{Location.address2}} {{Location.address3}},
+                                {{Location.city}} {{Location.country}} {{Location.zip}}
+                            </h4>
                         </div>
                 </div>
 
@@ -74,7 +78,7 @@
             <b-form-group id="input-group-2" label="What currency will you accept?" label-for="input-1" align="start">
                 <b-form-input
                 id="input-1"
-                v-model="currency"
+                v-model="Registration.currency"
                 required
                 placeholder=""
                 ></b-form-input>
@@ -97,7 +101,6 @@ export default {
     data(){
         return{
             baseUrl:  'http://localhost:3200/event',
-            currency: '',
             show: true,
             items: [
                     {
@@ -118,6 +121,22 @@ export default {
                         to: '/eventPayment'
                     }
                 ],
+                Location: {
+                venue: '',
+                address1: '',
+                address2: '',
+                address3: '',
+                city: '',
+                zip: '',
+                state: '',
+                country: '',
+                phone: '',
+                country: null,
+                options: [
+                { value: 'A', text: 'Option A (from options prop)' },
+                { value: 'B', text: 'Option B (from options prop)' }
+                ]
+                },
 
                 EventInformation: {
                             name:'',
@@ -131,7 +150,10 @@ export default {
                             options: [
                             { value: 'A', text: 'Option A (from options prop)' },
                             { value: 'B', text: 'Option B (from options prop)' }
-                            ]}
+                            ]},
+                Registration: {
+                    currency: ''
+                }
         }
     },
 created(){
@@ -140,6 +162,7 @@ axios.get(this.baseUrl + '/eventInformation')
     console.log('res here...', res.data.EventInformation);
     this.EventInformation = res.data.EventInformation;
     this.Location = res.data.Location;
+    this.Registration = res.data.Registration;
     })
     .catch(err => {
       console.log('err here...',err);
@@ -149,7 +172,7 @@ axios.get(this.baseUrl + '/eventInformation')
 filters: {
     formatDate(value){
     if (value) {
-        return moment(String(value)).format('DD/MM/YYYY')
+        return moment(String(value)).format('DD-MMMM-YYYY')
     }
     }
 },
@@ -166,7 +189,7 @@ filters: {
           let event = new FormData();
           let eventId = 'cvent';
           event.eventId = eventId;
-        //   event.Location = this.Location;
+          event.Registration = this.Registration;
           console.log('event', event);
           axios({
           method: 'post',
@@ -185,8 +208,9 @@ filters: {
           });
       },
    onReset(evt) {
-        evt.preventDefault()
-        this.show = false
+        evt.preventDefault();
+        this.Registration.currency = '';
+        this.show = false;
         this.$nextTick(() => {
           this.show = true
         })

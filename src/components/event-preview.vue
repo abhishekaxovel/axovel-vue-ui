@@ -17,7 +17,11 @@
                        End Date : {{EventInformation.endDate | formatDate}}
                         </h4></div>
                         <div class="col-md-6">
-                            <h4>Axovel Software Dwarka Delhi 110075</h4>
+                            <h4>
+                                {{Location.venue}}, {{Location.address1}}
+                                {{Location.address2}} {{Location.address3}},
+                                {{Location.city}} {{Location.country}} {{Location.zip}}
+                            </h4>
                         </div>
                 </div>
 
@@ -105,10 +109,10 @@
                 </template>
                 </b-form-select>
             </b-form-group>
-            <b-form-group id="input-group-4" label="Who can register for this event?" label-for="input-4" align="start">
+            <!-- <b-form-group id="input-group-4" label="Who can register for this event?" label-for="input-4" align="start">
                 <b-form-radio v-model="selected" name="some-radios" value="A" align="start">Open to the public</b-form-radio>
                 <b-form-radio v-model="selected" name="some-radios" value="B" align="start">Only those who get invitations</b-form-radio>
-            </b-form-group>
+            </b-form-group> -->
             <b-form-group id="input-group-4" label="How many people can attend your event?" label-for="input-4" align="start">
                 <b-form-input
                 id="input-4"
@@ -194,20 +198,36 @@ data(){
         ],
          show: true,
          options: [
-          { value: 'A', text: 'Option A' },
-          { value: 'B', text: 'Option B' }
+          { value: 'India', text: 'India' },
+          { value: 'Usa', text: 'Usa' }
         ],
 
-EventInformation: {
-        name:'',
-        description: '',
-        startDate: '',
-        endDate: '',
-        deadLine: '',
-        goal: '',
-        people: '',
-        selected: null,
-        }
+        EventInformation: {
+                name:'',
+                description: '',
+                startDate: '',
+                endDate: '',
+                deadLine: '',
+                goal: '',
+                people: '',
+                selected: null,
+                },
+        Location: {
+                venue: '',
+                address1: '',
+                address2: '',
+                address3: '',
+                city: '',
+                zip: '',
+                state: '',
+                country: '',
+                phone: '',
+                country: null,
+                options: [
+                { value: 'India', text: 'India' },
+                { value: 'Usa', text: 'Usa' }
+                ]
+            },
     }
     },
 
@@ -217,6 +237,7 @@ axios.get(this.baseUrl + '/eventInformation')
     .then(res => {
     console.log('res here...', res.data.EventInformation);
     this.EventInformation = res.data.EventInformation;
+    this.Location = res.data.Location;
     })
     .catch(err => {
       console.log('err here...',err);
@@ -227,7 +248,7 @@ axios.get(this.baseUrl + '/eventInformation')
 filters: {
     formatDate(value){
     if (value) {
-        return moment(String(value)).format('DD/MM/YYYY')
+        return moment(String(value)).format('DD-MMMM-YYYY')
     }
     }
 },
